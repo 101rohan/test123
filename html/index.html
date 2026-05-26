@@ -20,13 +20,13 @@
 
   <!-- NAVBAR -->
 
-  <section class="navbarLight">
+  <section id="navber" class="navbarLight">
 
     <!-- LEFT -->
     <div class="navLeft">
 
 <div class="logo">
-  <a href="javascript:void(0)">
+  <a href="/html/index.html">
     <img src="/assets/logoLight.png" alt="logo">
   </a>
 </div>
@@ -123,8 +123,12 @@ CONTACT
 
     <div class="heroBottom">
 
-      <h1 class="heroName">ROHAN</h1>
-
+<h1 class="heroName">
+    <div class="heroText">
+        <span>ROHAN</span>
+        <span>ROHAN</span>
+    </div>
+</h1>
       <div class="imgCircle">
         <img src="/assets/me.png" alt="Rohan">
       </div>
@@ -134,6 +138,9 @@ CONTACT
   </section>
 
  <section id="about" class="about">
+
+    <!-- FREE-FLOATING DRAGGABLE IMAGE (child of .about) -->
+    <img class="me" src="/assets/me.png" alt="Rohan" draggable="false" id="meImg">
 
     <div class="abt-head reveal">
         <span>Designer</span>
@@ -162,11 +169,8 @@ From wireframes to working applications, I like building solutions where design 
 
         </div>
 
-        <!-- CENTER IMAGE -->
-
-        <div class="me-wrapper reveal reveal-delay-4">
-            <div class="me"></div>
-        </div>
+        <!-- INVISIBLE SPACER keeps flex layout intact -->
+        <div class="me-wrapper" id="meAnchor"></div>
 
         <!-- RIGHT -->
 
@@ -229,9 +233,11 @@ From wireframes to working applications, I like building solutions where design 
 
 <script src="/js/app.js"></script>
 
+<script>
+
+</script>
+
 </div>
 </div>
-
-
 </body>
 </html>
