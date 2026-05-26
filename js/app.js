@@ -1,4 +1,14 @@
 /* =========================
+   PAGE START (REFRESH → HERO)
+========================= */
+
+window.addEventListener("load", () => {
+    // Always start at hero on refresh
+    window.scrollTo(0, 0);
+});
+
+
+/* =========================
    ELEMENTS
 ========================= */
 
@@ -21,50 +31,60 @@ const me = document.getElementById("meImg");
 
 
 /* =========================
-   ABOUT IMAGE HOVER CURSOR
+   HOVER EFFECT (CURSOR FOLLOW WITH WEIGHT)
 ========================= */
 
 (function () {
 
     if (!me) return;
 
-    const hoverImg = document.createElement("div");
+    const cursor = document.createElement("div");
 
-    hoverImg.style.position = "fixed";
-    hoverImg.style.width = "100px";
-    hoverImg.style.height = "2rem";
-    hoverImg.style.pointerEvents = "none";
-    hoverImg.style.zIndex = "9999";
-    hoverImg.style.opacity = "0";
-    hoverImg.style.transform = "translate(-50%, -50%) scale(0.9)";
-    hoverImg.style.transition = "opacity 0.25s ease, transform 0.15s ease";
+    cursor.style.position = "fixed";
+    cursor.style.width = "100px";
+    cursor.style.height = "2rem";
+    cursor.style.pointerEvents = "none";
+    cursor.style.zIndex = "9999";
+    cursor.style.opacity = "0";
+    cursor.style.transform = "translate(-50%, -50%)";
+    cursor.style.transition = "opacity 0.2s ease";
 
-    hoverImg.innerHTML = `
+    cursor.innerHTML = `
         <img src="/assets/cursor.cur"
-             style="width:100%;height: 2rem;;border-radius:14px;transform: translate3d(2rem, 0, 0) scale(1.1); transition: all 0.6s cubic-bezier(0.76, 0, 0.24, 1);">
+             style="width:100%;height: 2rem;;border-radius:16px;">
     `;
 
-    document.body.appendChild(hoverImg);
+    document.body.appendChild(cursor);
 
+    let mouseX = 0, mouseY = 0;
+    let currentX = 0, currentY = 0;
     let active = false;
 
-    document.addEventListener("mousemove", (e) => {
-        if (!active) return;
+    /* smooth follow (weight effect) */
+    function animate() {
+        currentX += (mouseX - currentX) * 0.12;
+        currentY += (mouseY - currentY) * 0.12;
 
-        hoverImg.style.left = e.clientX + "px";
-        hoverImg.style.top = e.clientY + "px";
+        cursor.style.left = currentX + "px";
+        cursor.style.top = currentY + "px";
+
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    document.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
 
     me.addEventListener("mouseenter", () => {
         active = true;
-        hoverImg.style.opacity = "1";
-        hoverImg.style.transform = "translate(-50%, -50%) scale(1)";
+        cursor.style.opacity = "1";
     });
 
     me.addEventListener("mouseleave", () => {
         active = false;
-        hoverImg.style.opacity = "0";
-        hoverImg.style.transform = "translate(-50%, -50%) scale(0.9)";
+        cursor.style.opacity = "0";
     });
 
 })();
@@ -91,7 +111,7 @@ const me = document.getElementById("meImg");
         me.style.transform = `translate(${tx}px, ${ty}px)`;
     }
 
-    window.addEventListener("load", () => setTimeout(initPos, 800));
+    window.addEventListener("load", () => setTimeout(initPos, 600));
     window.addEventListener("resize", initPos);
 
     let active = false;
@@ -138,11 +158,11 @@ const me = document.getElementById("meImg");
 
     me.addEventListener("touchstart", (e) => {
         dragStart(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
+    });
 
     document.addEventListener("touchmove", (e) => {
         dragMove(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
+    });
 
     document.addEventListener("touchend", dragEnd);
 
@@ -150,12 +170,12 @@ const me = document.getElementById("meImg");
 
 
 /* =========================
-   HERO MASK REVEAL (GSAP)
+   HERO ANIMATION (GSAP)
 ========================= */
 
 function wrapForMask(el) {
     const outer = document.createElement("span");
-    outer.style.cssText = "display:block;overflow:hidden;line-height:inherit;";
+    outer.style.cssText = "display:block;overflow:hidden;";
 
     const inner = document.createElement("span");
     inner.style.display = "block";
@@ -197,7 +217,7 @@ window.addEventListener("load", () => {
 
     gsap.fromTo(imgCircle,
         { y: 200, opacity: 0 },
-        { y: -20, opacity: 1, duration: 1.8, ease: "expo.out", delay: 0.25 }
+        { y: 0, opacity: 1, duration: 1.5, ease: "expo.out" }
     );
 
 });
@@ -214,43 +234,24 @@ menuBtn.addEventListener("click", (e) => {
     menuWrapper.classList.toggle("active");
 
     if (menuWrapper.classList.contains("active")) {
-
         menuText.textContent = "Close";
-
         topLine.style.transform = "rotate(45deg)";
-        topLine.style.top = "0.35rem";
-
         bottomLine.style.transform = "rotate(-45deg)";
-        bottomLine.style.bottom = "0.35rem";
-
     } else {
-
         menuText.textContent = "Menu";
-
         topLine.style.transform = "rotate(0deg)";
-        topLine.style.top = "0.1rem";
-
         bottomLine.style.transform = "rotate(0deg)";
-        bottomLine.style.bottom = "0.1rem";
     }
-
 });
 
 
 document.addEventListener("click", (e) => {
-
     if (!menuWrapper.contains(e.target)) {
-
         menuWrapper.classList.remove("active");
         menuText.textContent = "Menu";
-
         topLine.style.transform = "rotate(0deg)";
-        topLine.style.top = "0.1rem";
-
         bottomLine.style.transform = "rotate(0deg)";
-        bottomLine.style.bottom = "0.1rem";
     }
-
 });
 
 
@@ -290,38 +291,36 @@ window.addEventListener("scroll", () => {
 
 
 /* =========================
-   GSAP PLUGINS + HERO PARALLAX
+   GSAP SCROLL EFFECTS
 ========================= */
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
-const tl = gsap.timeline({
+gsap.to(".heroTop", {
     scrollTrigger: {
         trigger: ".hero",
         start: "top top",
-        end: "bottom top",
-        scrub: 1
-    }
-});
-
-tl.to(".heroTop", {
+        scrub: true
+    },
     y: -120,
     opacity: 0.2
-}, 0);
+});
 
-tl.to(".heroName .mask-inner, .heroName", {
-    y: -220,
-    opacity: 0
-}, 0);
-
-tl.to(".imgCircle", {
-    y: -300,
+gsap.to(".imgCircle", {
+    scrollTrigger: {
+        trigger: ".hero",
+        start: "top top",
+        scrub: true
+    },
+    y: -200,
     scale: 0.8,
     opacity: 0
-}, 0);
+});
 
 
-/* ABOUT REVEALS */
+/* =========================
+   ABOUT REVEALS
+========================= */
 
 gsap.from(".abt-head", {
     scrollTrigger: { trigger: ".about", start: "top 80%" },
@@ -331,28 +330,11 @@ gsap.from(".abt-head", {
     ease: "expo.out"
 });
 
-gsap.from(".abt-headbtm", {
-    scrollTrigger: { trigger: ".about", start: "top 75%" },
-    y: 100,
-    opacity: 0,
-    duration: 1.2,
-    delay: 0.1,
-    ease: "expo.out"
-});
-
 gsap.from(".abt-text", {
-    scrollTrigger: { trigger: ".abt-body", start: "top 80%" },
+    scrollTrigger: { trigger: ".about", start: "top 80%" },
     y: 80,
     opacity: 0,
-    duration: 1,
     stagger: 0.2,
+    duration: 1,
     ease: "power3.out"
-});
-
-gsap.from(".me-wrapper", {
-    scrollTrigger: { trigger: ".abt-body", start: "top 80%" },
-    scale: 0.7,
-    opacity: 0,
-    duration: 1.2,
-    ease: "expo.out"
 });
