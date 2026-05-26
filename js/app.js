@@ -1,16 +1,9 @@
-/* =========================
-   PAGE START (REFRESH → HERO)
-========================= */
-
 window.addEventListener("load", () => {
-    // Always start at hero on refresh
     window.scrollTo(0, 0);
 });
 
 
-/* =========================
-   ELEMENTS
-========================= */
+/* ELEMENTS */
 
 const menuWrapper = document.querySelector(".menuWrapper");
 const menuBtn = document.querySelector(".menuBtn");
@@ -30,29 +23,13 @@ const imgCircle = document.querySelector(".imgCircle");
 const me = document.getElementById("meImg");
 
 
-/* =========================
-   HOVER EFFECT (CURSOR FOLLOW WITH WEIGHT)
-========================= */
+/* HOVER EFFECT (CURSOR FOLLOW WITH WEIGHT) */
 
 (function () {
-
-    if (!me) return;
-
-    const cursor = document.createElement("div");
-
-    cursor.style.position = "fixed";
-    cursor.style.width = "100px";
-    cursor.style.height = "2rem";
-    cursor.style.pointerEvents = "none";
-    cursor.style.zIndex = "9999";
-    cursor.style.opacity = "0";
-    cursor.style.transform = "translate(-50%, -50%)";
-    cursor.style.transition = "opacity 0.2s ease";
-
-    cursor.innerHTML = `
-        <img src="/assets/cursor.cur"
-             style="width:100%;height: 2rem;;border-radius:16px;">
-    `;
+ if (!me) return;
+ const cursor = document.createElement("div");
+ cursor.style.position = "fixed"; cursor.style.width = "100px"; cursor.style.height = "2rem"; cursor.style.pointerEvents = "none"; cursor.style.zIndex = "9999"; cursor.style.opacity = "0"; cursor.style.transform = "translate(-50%, -50%)"; cursor.style.transition = "opacity 0.2s ease";
+ cursor.innerHTML = `     <img src="/assets/cursor.cur"          style="width:100%;height: 2rem;;border-radius:16px;"> `;
 
     document.body.appendChild(cursor);
 
@@ -90,9 +67,7 @@ const me = document.getElementById("meImg");
 })();
 
 
-/* =========================
-   DRAGGABLE ABOUT IMAGE
-========================= */
+/* DRAGGABLE ABOUT IMAGE */
 
 (function () {
 
@@ -169,9 +144,7 @@ const me = document.getElementById("meImg");
 })();
 
 
-/* =========================
-   HERO ANIMATION (GSAP)
-========================= */
+/* HERO ANIMATION (GSAP) */
 
 function wrapForMask(el) {
     const outer = document.createElement("span");
@@ -223,41 +196,53 @@ window.addEventListener("load", () => {
 });
 
 
-/* =========================
-   MENU TOGGLE
-========================= */
+/* MENU TOGGLE */
+
+
+function openMenu() {
+    menuWrapper.classList.add("active");
+    menuText.textContent = "Close";
+
+    topLine.style.transform = "rotate(45deg)";
+    topLine.style.top = "0.35rem";
+
+    bottomLine.style.transform = "rotate(-45deg)";
+    bottomLine.style.bottom = "0.35rem";
+}
+
+function closeMenu() {
+    menuWrapper.classList.remove("active");
+    menuText.textContent = "Menu";
+
+    topLine.style.transform = "rotate(0deg)";
+    topLine.style.top = "0.1rem";
+
+    bottomLine.style.transform = "rotate(0deg)";
+    bottomLine.style.bottom = "0.1rem";
+}
 
 menuBtn.addEventListener("click", (e) => {
 
     if (themeToggle.contains(e.target)) return;
 
-    menuWrapper.classList.toggle("active");
-
     if (menuWrapper.classList.contains("active")) {
-        menuText.textContent = "Close";
-        topLine.style.transform = "rotate(45deg)";
-        bottomLine.style.transform = "rotate(-45deg)";
+        closeMenu();
     } else {
-        menuText.textContent = "Menu";
-        topLine.style.transform = "rotate(0deg)";
-        bottomLine.style.transform = "rotate(0deg)";
+        openMenu();
     }
+
+    e.stopPropagation();
 });
 
 
 document.addEventListener("click", (e) => {
     if (!menuWrapper.contains(e.target)) {
-        menuWrapper.classList.remove("active");
-        menuText.textContent = "Menu";
-        topLine.style.transform = "rotate(0deg)";
-        bottomLine.style.transform = "rotate(0deg)";
+        closeMenu();
     }
 });
 
 
-/* =========================
-   DARK MODE
-========================= */
+/* DARK MODE */
 
 themeToggle.addEventListener("click", (e) => {
 
@@ -271,9 +256,7 @@ themeToggle.addEventListener("click", (e) => {
 });
 
 
-/* =========================
-   SCROLL PROGRESS
-========================= */
+/* SCROLL PROGRESS */
 
 window.addEventListener("scroll", () => {
 
@@ -290,9 +273,7 @@ window.addEventListener("scroll", () => {
 });
 
 
-/* =========================
-   GSAP SCROLL EFFECTS
-========================= */
+/* GSAP SCROLL EFFECTS */
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -318,9 +299,7 @@ gsap.to(".imgCircle", {
 });
 
 
-/* =========================
-   ABOUT REVEALS
-========================= */
+/* ABOUT REVEALS */
 
 gsap.from(".abt-head", {
     scrollTrigger: { trigger: ".about", start: "top 80%" },
