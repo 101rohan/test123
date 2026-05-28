@@ -317,3 +317,37 @@ gsap.from(".abt-text", {
     duration: 1,
     ease: "power3.out"
 });
+
+
+gsap.registerPlugin(ScrollTrigger);
+
+const projectsTrack =
+document.querySelector(".projectsTrack");
+
+const scrollAmount =
+projectsTrack.scrollWidth -
+window.innerWidth;
+
+gsap.to(projectsTrack,{
+
+x:-scrollAmount,
+
+ease:"none",
+
+scrollTrigger:{
+
+trigger:".projectsWrapper",
+
+start:"top top",
+
+end:()=>"+=" + scrollAmount,
+
+scrub:1,
+
+pin:true,
+
+invalidateOnRefresh:true
+
+}
+
+});

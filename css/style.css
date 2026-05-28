@@ -348,18 +348,23 @@ body.dark .dropdownMenu a{
 
 /* CONTACT BUTTON */
 
-.contactBtn{
+.contactBtn a{
+    color: #F8F8F8;
+    text-decoration: none;
+
+}
+
+.contactBtn {
     width: 6.25rem;
     height: 2.375rem;
 
     border: none;
     border-radius: 999px;
 
-    background: #171717;
-    color: #F8F8F8;
 
     font-size: 0.8rem;
     font-weight: 400;
+    background: #171717;
 
     cursor: pointer;
 
@@ -631,7 +636,7 @@ body.dark .me{
 .footer{
     background: #171717;
 
-    margin-top: 190px;
+
 
     position: relative;
     overflow: hidden;
@@ -830,4 +835,125 @@ body.dark .heroName{
 
 .heroName:hover .heroText span{
     transform: translateY(-100%);
+}
+
+
+
+.touch{
+    background: #171717; /* dark mode default */
+
+    min-height: 30rem;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    gap: 1.5rem;
+
+    padding: 2rem 2rem 0 2rem;
+}
+
+/* LIGHT MODE */
+
+body:not(.dark) .touch{
+    background: #f8f8f8;
+}
+
+/* TEXT */
+
+.touch p{
+    color: #F8F8F8;
+
+    font-family: Inter;
+    font-size: 1rem;
+    font-weight: 500;
+
+    letter-spacing: -0.06rem;
+
+    max-width: 40rem;
+}
+
+body:not(.dark) .touch p{
+    color: #171717;
+}
+
+/* BUTTON */
+
+.touch a{
+    border-radius: 0.25rem;
+
+    background: #F8F8F8;
+
+    gap: 0.625rem;
+
+    padding: 0.625rem;
+
+    color: #171717;
+
+    text-decoration: none;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 8rem;
+    height: 2.5rem;
+}
+
+body:not(.dark) .touch a{
+    background:#171717;
+    color:#F8F8F8;
+}
+
+/* ICON */
+
+.touch img{
+    width: 1rem;
+    height: 1rem;
+}
+
+/* HEADING */
+
+.touch h1{
+    color: #F8F8F8;
+
+    font-family: Inter;
+
+    font-size: 15rem;
+
+    font-weight: 900;
+
+    letter-spacing: -0.5rem;
+
+    line-height: 0.9;
+
+    text-align: center;
+}
+
+body:not(.dark) .touch h1{
+    color:#171717;
+}
+
+/* mail icons */
+
+.mailLight{
+    display:none;
+}
+
+body.dark .mailDark{
+    display:none;
+}
+
+body.dark .mailLight{
+    display:block;
+}
+
+.work{
+
+
 }
