@@ -351,3 +351,79 @@ invalidateOnRefresh:true
 }
 
 });
+
+
+
+const section = document.querySelector(".work-section");
+
+const cards = document.querySelectorAll(".stack-card");
+const projects = document.querySelectorAll(".project");
+const thumbs = document.querySelectorAll(".thumb");
+
+const totalCards = cards.length;
+
+let activeIndex = 0;
+
+function render(index){
+
+  activeIndex = Math.max(
+    0,
+    Math.min(totalCards - 1, index)
+  );
+
+  cards.forEach((card, i) => {
+
+    const offset = i - activeIndex;
+
+    if(offset === 0){
+      card.style.opacity = "1";
+      card.style.transform = "scale(1)";
+      card.style.zIndex = 100;
+      return;
+    }
+
+    if(offset > 0){
+      card.style.opacity = "0.15";
+      card.style.transform = `scale(${1 - offset * 0.03})`;
+      card.style.zIndex = 100 - offset;
+      return;
+    }
+
+    card.style.opacity = "0";
+    card.style.zIndex = 0;
+
+  });
+
+  projects.forEach((p, i)=>{
+    p.classList.toggle("active", i === activeIndex);
+  });
+
+  thumbs.forEach((t, i)=>{
+    t.classList.toggle("active", i === activeIndex);
+  });
+
+}
+
+function updateOnScroll(){
+
+  const rect = section.getBoundingClientRect();
+
+  const scrollable = section.offsetHeight - window.innerHeight;
+
+  const progress = Math.min(
+    Math.max(-rect.top / scrollable, 0),
+    1
+  );
+
+  const index = Math.round(
+    progress * (totalCards - 1)
+  );
+
+  render(index);
+
+}
+
+window.addEventListener("scroll", updateOnScroll);
+
+render(0);
+updateOnScroll();

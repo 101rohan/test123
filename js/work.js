@@ -1,119 +1,100 @@
 const viewport = document.getElementById("scrollViewport");
 
+const cards = document.querySelectorAll(".stack-card");
 const projects = document.querySelectorAll(".project");
 const thumbs = document.querySelectorAll(".thumb");
-const cards = document.querySelectorAll(".stack-card");
 
 const totalCards = cards.length;
 
-/* =========================
-   STACK POSITIONS
-========================= */
+let activeIndex = 0;
 
-function updateCards(activeIndex) {
 
-  cards.forEach((card, index) => {
+function render(index) {
+  activeIndex = Math.max(0, Math.min(totalCards - 1, index));
 
-    const offset = index - activeIndex;
+  cards.forEach((card, i) => {
+    const offset = i - activeIndex;
 
-    // ONLY SHOW CURRENT + NEXT STACKED CARDS
-    if (offset < 0) {
-      card.style.opacity = "0";
-      card.style.pointerEvents = "none";
-
-      card.style.transform = `
-        translateY(80px)
-        scale(0.85)
-        rotate(-8deg)
-      `;
-
+    // ACTIVE CARD
+    if (offset === 0) {
+      card.style.opacity = "1";
+      card.style.transform = "scale(1)";
+      card.style.zIndex = 100;
       return;
     }
 
-    // STACK EFFECT
-    const translateY = offset * 16;
-    const scale = 1 - offset * 0.04;
-    const rotate = offset * -2;
-    const blur = offset * 0.5;
-    const opacity = 1 - offset * 0.15;
+    // BEHIND CARDS (STACKED EXACTLY ON TOP)
+    if (offset > 0) {
+      card.style.opacity = "0.15";
+      card.style.transform = `scale(${1 - offset * 0.03})`;
+      card.style.zIndex = 100 - offset;
+      return;
+    }
 
-    card.style.transform = `
-      translateY(${translateY}px)
-      scale(${scale})
-      rotate(${rotate}deg)
-    `;
-
-    card.style.filter = `blur(${blur}px)`;
-    card.style.opacity = opacity;
-    card.style.zIndex = 100 - offset;
+    // FUTURE CARDS (HIDDEN)
+    card.style.opacity = "0";
+    card.style.zIndex = 0;
   });
 
-  // LEFT ACTIVE
-  projects.forEach((project, index) => {
-    project.classList.toggle(
-      "active",
-      index === activeIndex
-    );
+  /* LEFT + RIGHT SYNC */
+  projects.forEach((p, i) => {
+    p.classList.toggle("active", i === activeIndex);
   });
 
-  // RIGHT ACTIVE
-  thumbs.forEach((thumb, index) => {
-    thumb.classList.toggle(
-      "active",
-      index === activeIndex
-    );
+  thumbs.forEach((t, i) => {
+    t.classList.toggle("active", i === activeIndex);
   });
 }
 
 /* =========================
-   SCROLL ANIMATION
+   SCROLL → INDEX (SMOOTH BUT ACCURATE)
 ========================= */
 
-function animateStack() {
-
-  const maxScroll = viewport.scrollHeight - viewport.clientHeight;
+function getIndex() {
   const scrollTop = viewport.scrollTop;
+  const maxScroll = viewport.scrollHeight - viewport.clientHeight;
 
-  const progress =
-    (scrollTop / maxScroll) * (totalCards - 1);
+  const progress = scrollTop / maxScroll;
 
-  const activeIndex = Math.round(progress);
-
-  updateCards(activeIndex);
+  return Math.round(progress * (totalCards - 1));
 }
 
-animateStack();
+/* SCROLL LISTENER */
+viewport.addEventListener("scroll", () => {
+  render(getIndex());
+});
 
-viewport.addEventListener("scroll", animateStack);
-window.addEventListener("resize", animateStack);
+/* INIT */
+render(0);
 
-thumb.addEventListener("click", () => {
-  updateCards(index);
 
-  cards[index].scrollIntoView({
-    behavior: "smooth",
-    block: "center"
+
+thumbs.forEach((thumb, index) => {
+  thumb.addEventListener("click", () => {
+
+    const maxScroll =
+      viewport.scrollHeight - viewport.clientHeight;
+
+    viewport.scrollTo({
+      top: (maxScroll / (totalCards - 1)) * index,
+      behavior: "smooth"
+    });
+
+    render(index);
   });
 });
 
 
 
+projects.forEach((project, index) => {
+  project.addEventListener("click", () => {
+    const maxScroll = viewport.scrollHeight - viewport.clientHeight;
 
-/* =========================
-   LENIS
-========================= */
+    viewport.scrollTo({
+      top: (maxScroll / (totalCards - 1)) * index,
+      behavior: "smooth"
+    });
 
-const lenis = new Lenis({
-  wrapper: viewport,
-  content: document.querySelector(".work"),
-  smoothWheel: true,
-  duration: 1.1,
-  lerp: 0.08
+    render(index);
+  });
 });
-
-function raf(time) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
-
-requestAnimationFrame(raf);
