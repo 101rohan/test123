@@ -1,3 +1,59 @@
+/* ================================
+   LOADING ANIMATION (Staircase wipe)
+   ================================ */
+
+const loaderContainer = document.querySelector(".page-fade-sequence__container");
+const loaderText      = document.querySelectorAll(".page-fade-sequence__text-wrapper h2");
+const loaderItems     = document.querySelectorAll(".page-fade-sequence__item");
+
+gsap.set(loaderText,  { y: 50, opacity: 0 });
+
+function runLoader() {
+  const tl = gsap.timeline({
+    delay: 0.15,
+    onComplete: () => {
+      gsap.set(loaderContainer, { autoAlpha: 0, pointerEvents: "none" });
+    }
+  });
+
+  // 1. Text slides up and fades in
+  tl.to(loaderText, {
+    y: 0,
+    opacity: 1,
+    duration: 1,
+    stagger: 0.1,
+    ease: "expo.out"
+  });
+
+  // 2. Hold for reading
+  tl.to({}, { duration: 0.8 });
+
+  // 3. Staircase strips slide UP and OUT
+  // Leftmost moves first, creating the left-to-right reveal
+  tl.to(loaderItems, {
+    y: "-100%",
+    duration: 1.2,
+    stagger: {
+      each: 0.1,
+      from: "start"   // Leftmost first, wave moves right
+    },
+    ease: "power4.inOut"
+  }, "+=0.1");
+
+  // 4. Text fades out
+  tl.to(loaderText, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.in"
+  }, "<+=0.3");
+}
+
+window.addEventListener("load", () => {
+  window.scrollTo(0, 0);
+  runLoader();
+});
+
+/* top */
 window.addEventListener("load", () => {
     window.scrollTo(0, 0);
 });
@@ -21,6 +77,8 @@ const heroName = document.querySelector(".heroName");
 const imgCircle = document.querySelector(".imgCircle");
 
 const me = document.getElementById("meImg");
+
+
 
 
 /* HOVER EFFECT (CURSOR FOLLOW WITH WEIGHT) */
