@@ -319,70 +319,33 @@ gsap.from(".abt-text", {
 });
 
 
-gsap.registerPlugin(ScrollTrigger);
+/* ================================
+   WORK SECTION - SCROLL DRIVEN
+   ================================ */
 
-const projectsTrack =
-document.querySelector(".projectsTrack");
-
-const scrollAmount =
-projectsTrack.scrollWidth -
-window.innerWidth;
-
-gsap.to(projectsTrack,{
-
-x:-scrollAmount,
-
-ease:"none",
-
-scrollTrigger:{
-
-trigger:".projectsWrapper",
-
-start:"top top",
-
-end:()=>"+=" + scrollAmount,
-
-scrub:1,
-
-pin:true,
-
-invalidateOnRefresh:true
-
-}
-
-});
-
-
-
-const section = document.querySelector(".work-section");
-
+const workSection = document.querySelector(".work-section");
+const workSpacer = document.querySelector(".work-spacer");
 const cards = document.querySelectorAll(".stack-card");
 const projects = document.querySelectorAll(".project");
 const thumbs = document.querySelectorAll(".thumb");
 
 const totalCards = cards.length;
-
 let activeIndex = 0;
 
-function render(index){
-
-  activeIndex = Math.max(
-    0,
-    Math.min(totalCards - 1, index)
-  );
+function render(index) {
+  activeIndex = Math.max(0, Math.min(totalCards - 1, index));
 
   cards.forEach((card, i) => {
-
     const offset = i - activeIndex;
 
-    if(offset === 0){
+    if (offset === 0) {
       card.style.opacity = "1";
       card.style.transform = "scale(1)";
       card.style.zIndex = 100;
       return;
     }
 
-    if(offset > 0){
+    if (offset > 0) {
       card.style.opacity = "0.15";
       card.style.transform = `scale(${1 - offset * 0.03})`;
       card.style.zIndex = 100 - offset;
@@ -391,39 +354,73 @@ function render(index){
 
     card.style.opacity = "0";
     card.style.zIndex = 0;
-
   });
 
-  projects.forEach((p, i)=>{
+  projects.forEach((p, i) => {
     p.classList.toggle("active", i === activeIndex);
   });
 
-  thumbs.forEach((t, i)=>{
+  thumbs.forEach((t, i) => {
     t.classList.toggle("active", i === activeIndex);
   });
-
 }
 
-function updateOnScroll(){
-
-  const rect = section.getBoundingClientRect();
-
-  const scrollable = section.offsetHeight - window.innerHeight;
-
-  const progress = Math.min(
-    Math.max(-rect.top / scrollable, 0),
-    1
-  );
-
-  const index = Math.round(
-    progress * (totalCards - 1)
-  );
-
+/* Update on main page scroll */
+function updateWorkOnScroll() {
+  if (!workSection || !workSpacer) return;
+  
+  const rect = workSection.getBoundingClientRect();
+  const sectionHeight = workSpacer.offsetHeight;
+  const viewportHeight = window.innerHeight;
+  
+  // How far the top of the section has scrolled past the viewport
+  const scrolled = -rect.top;
+  const scrollable = sectionHeight - viewportHeight;
+  
+  const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+  const index = Math.round(progress * (totalCards - 1));
+  
   render(index);
-
 }
 
-window.addEventListener("scroll", updateOnScroll);
+window.addEventListener("scroll", updateWorkOnScroll);
 
+/* Click on project names */
+projects.forEach((project, i) => {
+  project.addEventListener("click", () => {
+    if (!workSpacer) return;
+    const sectionHeight = workSpacer.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollable = sectionHeight - viewportHeight;
+    const targetScroll = (scrollable / (totalCards - 1)) * i;
+    
+    const sectionTop = workSection.getBoundingClientRect().top + window.scrollY;
+    
+    window.scrollTo({
+      top: sectionTop + targetScroll,
+      behavior: "smooth"
+    });
+  });
+});
+
+/* Click on thumbnails */
+thumbs.forEach((thumb, i) => {
+  thumb.addEventListener("click", () => {
+    if (!workSpacer) return;
+    const sectionHeight = workSpacer.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollable = sectionHeight - viewportHeight;
+    const targetScroll = (scrollable / (totalCards - 1)) * i;
+    
+    const sectionTop = workSection.getBoundingClientRect().top + window.scrollY;
+    
+    window.scrollTo({
+      top: sectionTop + targetScroll,
+      behavior: "smooth"
+    });
+  });
+});
+
+/* Init */
 render(0);
-updateOnScroll();
+updateWorkOnScroll();
