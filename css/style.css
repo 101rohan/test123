@@ -1161,7 +1161,7 @@ body.dark .project a {
   cursor: pointer;
   position: relative;
   top: -106px;      
-  left: -30px;   
+  left: 0px;   
   transition:
     opacity .45s ease,
     transform .45s ease;
@@ -1239,3 +1239,93 @@ body.dark .project a {
 .page-fade-sequence__item:nth-child(4) { left: 40vw; }
 .page-fade-sequence__item:nth-child(5) { left: 60vw; }
 .page-fade-sequence__item:nth-child(6) { left: 80vw; }
+
+
+/* laravel */
+
+.laravel {
+    background: #f5f5f5;
+    min-height: 700px;
+}
+
+.project-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 100px 20px 0 20px;
+}
+
+.project-title {
+    font-family: "Instrument Serif";
+    font-size: 96px;
+    font-weight: 400;
+    color: #171717;
+    line-height: 1;
+}
+
+.github-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #171717;
+    color: #F8F8F8;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.9px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.github-btn img {
+    width: 13px;
+    height: 13px;
+}
+
+
+
+.project-card {
+    border-radius: 8px;
+    background: #171717;
+    margin: 0 1.25rem 0 1.25rem;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+
+    opacity: 1;
+    transform: translateY(0) scale(1);
+
+    transition:
+        opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+        transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+
+.project-card p {
+    color: #F8F8F8;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.84px;
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.arrow-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.arrow-btn svg {
+    width: 28px;
+    height: 28px;
+}
