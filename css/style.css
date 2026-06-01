@@ -1241,91 +1241,123 @@ body.dark .project a {
 .page-fade-sequence__item:nth-child(6) { left: 80vw; }
 
 
-/* laravel */
+/* ================================
+   LARAVEL SECTION
+   ================================ */
 
-.laravel {
-    background: #f5f5f5;
-    min-height: 700px;
+.laravel{
+    position:relative;
+    padding-top:100px;
 }
 
-.project-top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 100px 20px 0 20px;
+.laravel-header{
+    position:relative;
+    height:120px;
+    margin:0 20px;
 }
 
-.project-title {
-    font-family: "Instrument Serif";
-    font-size: 96px;
-    font-weight: 400;
-    color: #171717;
-    line-height: 1;
+.project-title{
+    font-family:"Instrument Serif";
+    font-size:96px;
+    line-height:1;
+    margin:0;
+
+    position:absolute;
+    left:0;
+    bottom:0;
 }
 
-.github-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: #171717;
-    color: #F8F8F8;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.9px;
-    padding: 12px 14px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: background 0.3s, transform 0.3s;
+.github-btn{
+    position:absolute;
+    right:0;
+    bottom:12px;
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    padding:12px 14px;
+
+    background:#171717;
+    color:#F8F8F8;
+    text-decoration:none;
+    border-radius:4px;
+    width: 6.1875rem;
+    
+}
+.github-btn h1{
+    font-size: 0.8rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    
 }
 
 .github-btn img {
     width: 13px;
     height: 13px;
+    transition: filter 0.35s ease;
 }
 
-
-
-.project-card {
-    border-radius: 8px;
+/* Animated line divider */
+.section-line {
+    height: 1px;
     background: #171717;
-    margin: 0 1.25rem 0 1.25rem;
-    height: 500px;
-    position: relative;
-    overflow: hidden;
-
-    opacity: 1;
-    transform: translateY(0) scale(1);
-
-    transition:
-        opacity 0.9s cubic-bezier(0.16,1,0.3,1),
-        transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    width: 100%;
+    transform-origin: left center;
+    transition: background 0.35s ease;
 }
 
-.project-card p {
+/* Wrapper holds the card */
+
+.project-card{
+    background:#171717;
+    min-height:500px;
+    border-radius:8px;
+    margin: 1.25rem;
+}
+
+.project-card p{
+    color:#F8F8F8;
+    padding:20px;
+    font-size:18px;
+}
+
+/* ================================
+   LARAVEL SECTION — DARK MODE
+   ================================ */
+
+body.dark .laravel {
+    background: #171717;
+}
+
+body.dark .project-title {
     color: #F8F8F8;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: 0.84px;
-    padding-top: 10px;
-    padding-left: 20px;
 }
 
-.arrow-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
+body.dark .github-btn {
+    background: #F8F8F8;
+    color: #171717;
 }
 
-.arrow-btn svg {
-    width: 28px;
-    height: 28px;
+body.dark .github-btn img {
+    filter: invert(1);
+}
+
+body.dark .section-line {
+    background: #444;
+}
+
+/* Wrapper goes dark so light card pops */
+body.dark .project-wrapper {
+    background: #222222;
+}
+
+/* Inverted card so it pops on dark bg */
+body.dark .project-card {
+    background: #F8F8F8;
+}
+
+body.dark .project-card p {
+    color: #171717;
 }
