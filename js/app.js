@@ -1,3 +1,18 @@
+/* ============================================================
+   app.js  —  Full animation & interaction layer
+   Requires: GSAP 3 + ScrollTrigger (loaded before this file)
+   ============================================================ */
+
+import { prepareWithSegments, layoutNextLineRange, materializeLineRange } from 'https://esm.sh/@chenglou/pretext';
+
+/* Grab GSAP globals exposed by CDN scripts */
+const gsap          = window.gsap;
+const ScrollTrigger = window.ScrollTrigger;
+
+/* ================================
+   REGISTER PLUGINS
+   ================================ */
+
 gsap.registerPlugin(ScrollTrigger);
 
 
@@ -44,7 +59,6 @@ const touchSection   = document.querySelector(".touch");
 (function initLoader() {
     if (!loaderContainer || loaderTexts.length === 0 || loaderPanels.length === 0) return;
 
-    // Always start at top
     window.scrollTo(0, 0);
 
     gsap.set(loaderTexts, { y: 50, opacity: 0 });
@@ -56,32 +70,15 @@ const touchSection   = document.querySelector(".touch");
         }
     });
 
-    // Text slides up
-    tl.to(loaderTexts, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.1,
-        ease: "expo.out"
-    });
-
-    // Hold for reading
+    tl.to(loaderTexts, { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "expo.out" });
     tl.to({}, { duration: 0.8 });
-
-    // Panels slide UP and OUT — left-to-right staircase
     tl.to(loaderPanels, {
         y: "-100%",
         duration: 1.2,
         stagger: { each: 0.1, from: "start" },
         ease: "power4.inOut"
     }, "+=0.1");
-
-    // Text fades out at the same time panels start moving
-    tl.to(loaderTexts, {
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in"
-    }, "<+=0.3");
+    tl.to(loaderTexts, { opacity: 0, duration: 0.3, ease: "power2.in" }, "<+=0.3");
 })();
 
 
@@ -89,19 +86,12 @@ const touchSection   = document.querySelector(".touch");
    2. HERO ANIMATION  —  Mask-reveal on load + scroll parallax
    ================================================================ */
 
-/**
- * Wraps an element's innerHTML in overflow:hidden + inner span.
- * Lets GSAP animate a clean clip-style slide-up.
- * Returns the inner span to animate.
- */
 function wrapForMask(el) {
     const outer = document.createElement("span");
     outer.style.cssText = "display:block;overflow:hidden;";
-
     const inner = document.createElement("span");
     inner.style.display = "block";
     inner.innerHTML = el.innerHTML;
-
     outer.appendChild(inner);
     el.innerHTML = "";
     el.appendChild(outer);
@@ -112,44 +102,28 @@ function wrapForMask(el) {
     if (!heroTopEl || !heroNameEl || !imgCircle) return;
 
     document.fonts.ready.then(() => {
-
-        // Lines in .heroTop (h1 + p)
         const heroLines  = heroTopEl.querySelectorAll("h1, p");
         const heroInners = Array.from(heroLines).map(wrapForMask);
 
         gsap.fromTo(heroInners,
             { yPercent: 110 },
-            {
-                yPercent: 0,
-                duration: 1.1,
-                ease: "expo.out",
-                stagger: 0.1,
-                delay: 2.5   // fires after loader finishes
-            }
+            { yPercent: 0, duration: 1.1, ease: "expo.out", stagger: 0.1, delay: 2.5 }
         );
 
-        // Large name
         const heroNameInner = wrapForMask(heroNameEl);
         gsap.fromTo(heroNameInner,
             { yPercent: 110 },
             { yPercent: 0, duration: 1.4, ease: "expo.out", delay: 2.8 }
         );
 
-        // Profile circle
         gsap.fromTo(imgCircle,
             { y: 200, opacity: 0 },
             { y: 0, opacity: 1, duration: 1.5, ease: "expo.out", delay: 2.5 }
         );
     });
 
-    // Scroll parallax on hero content
     const heroTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true
-        }
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
     });
     heroTl.to(heroTopEl, { y: -120, opacity: 0.2, ease: "none" });
     heroTl.to(imgCircle, { y: -200, scale: 0.8, opacity: 0, ease: "none" }, 0);
@@ -157,7 +131,7 @@ function wrapForMask(el) {
 
 
 /* ================================================================
-   3. ABOUT SECTION  —  Scroll reveals + draggable image + cursor
+   3. ABOUT SECTION  —  Scroll reveals + draggable image + Pretext flow
    ================================================================ */
 
 (function initAbout() {
@@ -167,13 +141,144 @@ function wrapForMask(el) {
     const abtTl = gsap.timeline({
         scrollTrigger: { trigger: ".about", start: "top 80%" }
     });
-
     abtTl.from(".abt-head",    { y: 100, opacity: 0, duration: 1.2, ease: "expo.out" });
     abtTl.from(".abt-headbtm", { y: 100, opacity: 0, duration: 1.2, ease: "expo.out" }, "-=1");
     abtTl.from(".abt-text",    { y: 80, opacity: 0, stagger: 0.2, duration: 1, ease: "power3.out" }, "-=0.8");
 
 
-    /* --- Draggable image — position at anchor on load --- */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       PRETEXT — dynamic text reflow around the draggable photo
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+    const PARA1 = "I'm an aspiring UI/UX designer and Laravel developer focused on creating products that are both intuitive and technically solid. I enjoy translating user needs into clean interfaces and then bringing them to life with scalable backend systems.";
+    const PARA2 = "From wireframes to working applications, I like building solutions where design and development support each other instead of competing.";
+
+    /* Replace static <p> tags with a single managed container */
+    const leftAbtText   = document.querySelector(".abt-body .abt-text");
+    const paras         = leftAbtText ? leftAbtText.querySelectorAll("p") : [];
+    const flowContainer = document.createElement("div");
+    flowContainer.className = "abt-flow-container";
+    if (paras.length >= 2) {
+        paras[0].parentNode.insertBefore(flowContainer, paras[0]);
+        paras[0].remove();
+        paras[1].remove();
+    }
+
+    /* Pretext state — populated after fonts resolve */
+    let preparedPara1 = null;
+    let preparedPara2 = null;
+    let FONT        = "18px Inter";
+    let LINE_HEIGHT = 24;
+    const PARA_GAP  = 22;  /* matches original margin-bottom on <p> */
+
+    /* Container geometry cached in section-relative coords.
+       cR.top - sR.top stays constant during scroll — no viewport dependency. */
+    let contLeft = 0, contTop = 0, contRight = 0, contW = 0;
+
+    function updateContainerGeometry() {
+        const sR  = aboutSection.getBoundingClientRect();
+        const cR  = flowContainer.getBoundingClientRect();
+        contLeft  = cR.left   - sR.left;
+        contTop   = cR.top    - sR.top;
+        contRight = cR.right  - sR.left;
+        contW     = flowContainer.offsetWidth;
+    }
+
+    document.fonts.ready.then(() => {
+        const basePx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const fontPx = Math.round(basePx * 1.15);
+        FONT        = `${fontPx}px Inter`;
+        LINE_HEIGHT = Math.round(fontPx * 1.32);
+
+        preparedPara1 = prepareWithSegments(PARA1, FONT);
+        preparedPara2 = prepareWithSegments(PARA2, FONT);
+
+        updateContainerGeometry();
+        reflowText();
+    });
+
+    /* ── Core reflow: rebuild all line spans, routing around the image ── */
+    let reflowPending = false;
+
+    function reflowText() {
+        if (!preparedPara1 || !preparedPara2 || contW <= 0) return;
+
+        /* Image bounds in section-relative coords.
+           tx / ty come from the drag system and are already section-relative. */
+        const imgL = tx;
+        const imgT = ty;
+        const imgR = tx + meImg.offsetWidth;
+        const imgB = ty + meImg.offsetHeight;
+
+        /* Pre-check horizontal overlap — same for every line */
+        const overH = imgL < contRight && imgR > contLeft;
+
+        flowContainer.innerHTML = "";
+
+        function renderPara(prepared, startY) {
+            let cursor = { segmentIndex: 0, graphemeIndex: 0 };
+            let y = startY;
+
+            while (true) {
+                /* Convert container-local y to section coords for overlap test */
+                const lineT = contTop + y;
+                const lineB = lineT + LINE_HEIGHT;
+                const overV = lineT < imgB && lineB > imgT;
+
+                let lineX = 0, lineW = contW;
+
+                if (overH && overV) {
+                    /* Image position relative to this container's left edge */
+                    const iL = imgL - contLeft;
+                    const iR = imgR - contLeft;
+
+                    if ((iL + iR) / 2 > contW / 2) {
+                        /* Image on the right half → shrink line, text flows left */
+                        lineW = Math.max(50, iL - 10);
+                    } else {
+                        /* Image on the left half → offset line, text flows right */
+                        lineX = Math.max(0, iR + 10);
+                        lineW = Math.max(50, contW - lineX);
+                    }
+                }
+
+                const range = layoutNextLineRange(prepared, cursor, lineW);
+                if (range === null) break;
+
+                const { text } = materializeLineRange(prepared, range);
+
+                const span       = document.createElement("span");
+                span.className   = "abt-flow-line";
+                span.style.left  = `${lineX}px`;
+                span.style.top   = `${y}px`;
+                span.textContent = text;
+                flowContainer.appendChild(span);
+
+                cursor = range.end;
+                y += LINE_HEIGHT;
+            }
+            return y;
+        }
+
+        let y = renderPara(preparedPara1, 0);
+        y += PARA_GAP;
+        y = renderPara(preparedPara2, y);
+        flowContainer.style.height = `${y}px`;
+    }
+
+    function scheduleReflow() {
+        if (reflowPending) return;
+        reflowPending = true;
+        requestAnimationFrame(() => { reflowPending = false; reflowText(); });
+    }
+
+    window.addEventListener("resize", () => { updateContainerGeometry(); scheduleReflow(); });
+
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       DRAGGABLE IMAGE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
     let tx = 0, ty = 0;
 
     function initDragPos() {
@@ -182,12 +287,13 @@ function wrapForMask(el) {
         tx = wr.left - ar.left;
         ty = wr.top  - ar.top + aboutSection.scrollTop;
         meImg.style.transform = `translate(${tx}px, ${ty}px)`;
+        updateContainerGeometry();
+        reflowText();
     }
 
     setTimeout(initDragPos, 600);
     window.addEventListener("resize", initDragPos);
 
-    /* Drag state */
     let dragActive = false;
     let startCx = 0, startCy = 0;
     let startTx = 0, startTy = 0;
@@ -208,39 +314,34 @@ function wrapForMask(el) {
         tx = clamp(startTx + cx - startCx, 0, maxX);
         ty = clamp(startTy + cy - startCy, 0, maxY);
         meImg.style.transform = `translate(${tx}px, ${ty}px)`;
+        scheduleReflow();   /* throttled to one reflow per animation frame */
     }
 
     function onDragEnd() {
         dragActive = false;
         meImg.classList.remove("dragging");
+        reflowText();
     }
 
-    // Mouse events
-    meImg.addEventListener("mousedown", (e) => { e.preventDefault(); onDragStart(e.clientX, e.clientY); });
+    meImg.addEventListener("mousedown",    (e) => { e.preventDefault(); onDragStart(e.clientX, e.clientY); });
     document.addEventListener("mousemove", (e) => onDragMove(e.clientX, e.clientY));
-    document.addEventListener("mouseup", onDragEnd);
+    document.addEventListener("mouseup",   onDragEnd);
 
-    // Touch events
-    meImg.addEventListener("touchstart", (e) => onDragStart(e.touches[0].clientX, e.touches[0].clientY));
-    document.addEventListener("touchmove",  (e) => onDragMove(e.touches[0].clientX, e.touches[0].clientY));
-    document.addEventListener("touchend", onDragEnd);
+    meImg.addEventListener("touchstart",   (e) => onDragStart(e.touches[0].clientX, e.touches[0].clientY));
+    document.addEventListener("touchmove", (e) => onDragMove(e.touches[0].clientX, e.touches[0].clientY));
+    document.addEventListener("touchend",  onDragEnd);
 
 
-    /* --- Custom cursor using /assets/cursor.cur — smooth weighted follow --- */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       CUSTOM CURSOR
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
     const cursor = document.createElement("div");
-    cursor.style.position    = "fixed";
-    cursor.style.width       = "100px";
-    cursor.style.height      = "2rem";
-    cursor.style.pointerEvents = "none";
-    cursor.style.zIndex      = "9999";
-    cursor.style.opacity     = "0";
-    cursor.style.transform   = "translate(-50%, -50%)";
-    cursor.style.transition  = "opacity 0.2s ease";
+    cursor.style.cssText = "position:fixed;width:100px;height:2rem;pointer-events:none;z-index:9999;opacity:0;transform:translate(-50%,-50%);transition:opacity 0.2s ease;";
     cursor.innerHTML = `<img src="/assets/cursor.cur" style="width:100%;height:2rem;border-radius:16px;">`;
     document.body.appendChild(cursor);
 
-    let mouseX = 0, mouseY = 0;
-    let currentX = 0, currentY = 0;
+    let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
 
     (function animateCursor() {
         currentX += (mouseX - currentX) * 0.12;
@@ -260,8 +361,6 @@ function wrapForMask(el) {
 /* ================================================================
    4. NAVBAR  —  Menu toggle + dark-mode toggle + scroll progress
    ================================================================ */
-
-/* --- Menu open / close --- */
 
 function openMenu() {
     if (menuWrapper) menuWrapper.classList.add("active");
@@ -289,7 +388,6 @@ document.addEventListener("click", (e) => {
     if (menuWrapper && !menuWrapper.contains(e.target)) closeMenu();
 });
 
-// Smooth-scroll anchor links inside dropdown
 document.querySelectorAll(".dropdownMenu a[href^='#']").forEach((link) => {
     link.addEventListener("click", (e) => {
         const id     = link.getAttribute("href").slice(1);
@@ -298,9 +396,6 @@ document.querySelectorAll(".dropdownMenu a[href^='#']").forEach((link) => {
         closeMenu();
     });
 });
-
-
-/* --- Dark-mode toggle --- */
 
 if (themeToggle) {
     themeToggle.addEventListener("click", (e) => {
@@ -314,15 +409,12 @@ if (themeToggle) {
     });
 }
 
-
-/* --- Scroll progress bar --- */
-
 window.addEventListener("scroll", () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const percent   = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
-    if (scrollFill) scrollFill.style.width   = `${percent}%`;
-    if (scrollText) scrollText.textContent   = `${percent}%`;
+    if (scrollFill) scrollFill.style.width  = `${percent}%`;
+    if (scrollText) scrollText.textContent  = `${percent}%`;
 }, { passive: true });
 
 
@@ -337,10 +429,8 @@ window.addEventListener("scroll", () => {
 
     function renderWork(index) {
         index = Math.max(0, Math.min(totalCards - 1, index));
-
         stackCards.forEach((card, i) => {
             const offset = i - index;
-
             if (offset === 0) {
                 card.style.opacity   = "1";
                 card.style.transform = "scale(1)";
@@ -350,11 +440,10 @@ window.addEventListener("scroll", () => {
                 card.style.transform = `scale(${1 - offset * 0.03})`;
                 card.style.zIndex    = String(100 - offset);
             } else {
-                card.style.opacity   = "0";
-                card.style.zIndex    = "0";
+                card.style.opacity = "0";
+                card.style.zIndex  = "0";
             }
         });
-
         projectItems.forEach((p, i) => p.classList.toggle("active", i === index));
         thumbItems.forEach((t, i)   => t.classList.toggle("active", i === index));
     }
@@ -391,6 +480,7 @@ window.addEventListener("scroll", () => {
 /* ================================================================
    6. LARAVEL SECTION  —  Scroll-triggered entrance
    ================================================================ */
+
 
 (function initLaravel() {
     if (!laravelSection) return;
@@ -439,8 +529,5 @@ window.addEventListener("scroll", () => {
 
 
 /* ================================================================
-   8. FOOTER  —  Double-span hover-reveal
-   Pure CSS — no JS needed.
-   The .foot-top a and .foot-name a both use the
-   translateY(-100%) trick on span:first-child on hover.
+   8. FOOTER  —  Double-span hover-reveal (pure CSS — no JS needed)
    ================================================================ */

@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DOC</title>
+  <title>Rohan</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=PT+Mono&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=PT+Mono&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-<!-- PAGE LOAD SEQUENCE -->
+
+<!-- ===================== PAGE LOAD SEQUENCE ===================== -->
 <div class="page-fade-sequence__container">
   <div class="page-fade-sequence__text-wrapper">
     <h2 class="page-fade-sequence__heading"><span>Hello</span></h2>
@@ -25,190 +26,143 @@
   <div class="page-fade-sequence__item"></div>
   <div class="page-fade-sequence__item"></div>
 </div>
-  
+
 <div id="smooth-wrapper">
 <div id="smooth-content">
 
-  <!-- NAVBAR -->
+<!-- ========================= NAVBAR ========================= -->
+<section id="navber" class="navbarLight">
 
-  <section id="navber" class="navbarLight">
-
-    <!-- LEFT -->
-    <div class="navLeft">
-
-<div class="logo">
-  <a href="/html/index.html">
-    <img src="/assets/logoLight.png" alt="logo">
-  </a>
-</div>
-
+  <!-- LEFT -->
+  <div class="navLeft">
+    <div class="logo">
+      <a href="/html/index.html">
+        <img src="/assets/logoLight.png" alt="logo">
+      </a>
     </div>
+  </div>
 
-    <!-- CENTER -->
-    <div class="navMiddle">
+  <!-- CENTER -->
+  <div class="navMiddle">
+    <div class="menuWrapper">
 
-      <div class="menuWrapper">
+      <!-- MENU BUTTON -->
+      <button class="menuBtn">
+        <div class="menuIcon">
+          <span class="menuLine top"></span>
+          <span class="menuLine bottom"></span>
+        </div>
+        <span class="menuText">Menu</span>
+        <div class="divider"></div>
 
-        <!-- MENU BUTTON -->
-        <button class="menuBtn">
+        <!-- RIGHT SIDE OF BUTTON -->
+        <div class="scrollWrapper">
 
-          <div class="menuIcon">
-            <span class="menuLine top"></span>
-            <span class="menuLine bottom"></span>
+          <!-- THEME TOGGLE -->
+          <div class="themeIcon" id="themeToggle">
+            <img class="iconImg sunImg" src="/assets/sun.png" alt="sun">
+            <img class="iconImg moonImg" src="/assets/moon.png" alt="moon">
           </div>
 
-          <span class="menuText">Menu</span>
-
-          <div class="divider"></div>
-
-          <!-- RIGHT SIDE -->
-          <div class="scrollWrapper">
-
-            <!-- THEME TOGGLE -->
-            <div class="themeIcon" id="themeToggle">
-
-              <img
-                class="iconImg sunImg"
-                src="/assets/sun.png"
-                alt="sun"
-              >
-
-              <img
-                class="iconImg moonImg"
-                src="/assets/moon.png"
-                alt="moon"
-              >
-
-            </div>
-
-            <!-- SCROLL -->
-            <div class="scrollTrack">
-
-              <div class="scrollFill"></div>
-
-              <span class="scrollText">0%</span>
-
-            </div>
-
+          <!-- SCROLL PROGRESS -->
+          <div class="scrollTrack">
+            <div class="scrollFill"></div>
+            <span class="scrollText">0%</span>
           </div>
-
-        </button>
-
-        <!-- DROPDOWN -->
-        <div class="dropdownMenu">
-
-          <span class="dropdownLabel">
-            menu
-          </span>
-
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="https://github.com/101rohan" target="_blank">Github</a>
 
         </div>
-
-      </div>
-
-    </div>
-
-    <!-- RIGHT -->
-    <div class="navRight">
-
-      <button class="contactBtn">
-          <a href="#touch">CONTACT</a>
       </button>
 
-    </div>
-
-  </section>
-
-  <!-- HERO -->
-
-  <section class="hero">
-
-    <div class="heroTop">
-      <h1>UI / UX Designer</h1>
-      <h1>Laravel Developer</h1>
-      <p>Just an Aspirant.</p>
-    </div>
-
-    <div class="heroBottom">
-
-<h1 class="heroName">
-    <div class="heroText">ROHAN
-    </div>
-</h1>
-      <div class="imgCircle">
-        <img src="/assets/me.png" alt="Rohan">
+      <!-- DROPDOWN -->
+      <div class="dropdownMenu">
+        <span class="dropdownLabel">menu</span>
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="https://github.com/101rohan" target="_blank">Github</a>
       </div>
 
     </div>
+  </div>
 
-  </section>
-
- <section id="about" class="about">
-
-    <!-- FREE-FLOATING DRAGGABLE IMAGE (child of .about) -->
-    <img class="me" src="/assets/me.png" alt="Rohan" draggable="false" id="meImg">
-
-    <div class="abt-head reveal">
-        <span>Designer</span>
-        <span class="small-head">(UI/UX),</span>
-    </div>
-
-    <div class="abt-headbtm reveal reveal-delay-1">
-        <span>Laravel Developer.</span>
-    </div>
-
-    <div class="abt-body">
-
-        <!-- LEFT -->
-
-        <div class="abt-text">
-
-            <div class="abt-label">
-                About Me
-            </div>
-
-            <p class="reveal reveal-delay-2">
-I'm an aspiring UI/UX designer and Laravel developer focused on creating products that are both intuitive and technically solid. I enjoy translating user needs into clean interfaces and then bringing them to life with scalable backend systems.            </p>
-
-            <p class="reveal reveal-delay-3">
-From wireframes to working applications, I like building solutions where design and development support each other instead of competing.            </p>
-
-        </div>
-
-        <!-- INVISIBLE SPACER keeps flex layout intact -->
-        <div class="me-wrapper" id="meAnchor"></div>
-
-        <!-- RIGHT -->
-
-        <div class="abt-text">
-
-            <div class="abt-label">
-                Email
-            </div>
-
-            <p class="connect reveal reveal-delay-4">
-                Let's connect →
-            </p>
-
-            <p class="email-link reveal reveal-delay-5">
-                rohanshrestha612@email.com
-            </p>
-
-        </div>
-
-    </div>
+  <!-- RIGHT -->
+  <div class="navRight">
+    <button class="contactBtn">
+      <a href="#touch">CONTACT</a>
+    </button>
+  </div>
 
 </section>
 
+<!-- ========================= HERO ========================= -->
+<section class="hero">
+
+  <div class="heroTop">
+    <h1>UI / UX Designer</h1>
+    <h1>Laravel Developer</h1>
+    <p>Just an Aspirant.</p>
+  </div>
+
+  <div class="heroBottom">
+    <h1 class="heroName">
+      <div class="heroText">ROHAN</div>
+    </h1>
+    <div class="imgCircle">
+      <img src="/assets/me.png" alt="Rohan">
+    </div>
+  </div>
+
+</section>
+
+<!-- ========================= ABOUT ========================= -->
+<section id="about" class="about">
+
+  <!-- FREE-FLOATING DRAGGABLE IMAGE -->
+  <img class="me" src="/assets/me.png" alt="Rohan" draggable="false" id="meImg">
+
+  <div class="abt-head reveal">
+    <span>Designer</span>
+    <span class="small-head">(UI/UX),</span>
+  </div>
+
+  <div class="abt-headbtm reveal reveal-delay-1">
+    <span>Laravel Developer.</span>
+  </div>
+
+  <div class="abt-body">
+
+    <!-- LEFT -->
+    <div class="abt-text">
+      <div class="abt-label">About Me</div>
+      <p class="reveal reveal-delay-2">
+        I'm an aspiring UI/UX designer and Laravel developer focused on creating
+        products that are both intuitive and technically solid. I enjoy translating
+        user needs into clean interfaces and then bringing them to life with
+        scalable backend systems.
+      </p>
+      <p class="reveal reveal-delay-3">
+        From wireframes to working applications, I like building solutions where
+        design and development support each other instead of competing.
+      </p>
+    </div>
+
+    <!-- INVISIBLE SPACER keeps flex layout intact -->
+    <div class="me-wrapper" id="meAnchor"></div>
+
+    <!-- RIGHT -->
+    <div class="abt-text">
+      <div class="abt-label">Email</div>
+      <p class="connect reveal reveal-delay-4">Let's connect →</p>
+      <p class="email-link reveal reveal-delay-5">rohanshrestha612@email.com</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ========================= WORK ========================= -->
 <section id="work" class="work-section">
-
   <div class="work-spacer">
-
     <div class="work-sticky">
-
       <div class="work-inner">
 
         <div class="work-header">
@@ -218,120 +172,57 @@ From wireframes to working applications, I like building solutions where design 
 
         <div class="work-layout">
 
-          <!-- LEFT -->
+          <!-- LEFT: project list -->
           <div class="project-list">
-
-            <div class="project active" data-index="0">
-              <span>Project 1</span>
-              <a href="#">see more.</a>
-            </div>
-
-            <div class="project" data-index="1">
-              <span>Project 2</span>
-              <a href="#">see more.</a>
-            </div>
-
-            <div class="project" data-index="2">
-              <span>Project 3</span>
-              <a href="#">see more.</a>
-            </div>
-
-            <div class="project" data-index="3">
-              <span>Project 4</span>
-              <a href="#">see more.</a>
-            </div>
-
-            <div class="project" data-index="4">
-              <span>Project 5</span>
-              <a href="#">see more.</a>
-            </div>
-
+            <div class="project active" data-index="0"><span>Project 1</span><a href="#">see more.</a></div>
+            <div class="project" data-index="1"><span>Project 2</span><a href="#">see more.</a></div>
+            <div class="project" data-index="2"><span>Project 3</span><a href="#">see more.</a></div>
+            <div class="project" data-index="3"><span>Project 4</span><a href="#">see more.</a></div>
+            <div class="project" data-index="4"><span>Project 5</span><a href="#">see more.</a></div>
           </div>
 
-          <!-- CENTER -->
+          <!-- CENTER: card stack -->
           <div class="stack-container">
-
             <div class="stack-inner">
-
               <div class="stack-card">
                 <img src="/assets/1.png" alt="">
-                <div class="card-info">
-                  <h3>Campaign<br>Design</h3>
-                  <span>2024</span>
-                </div>
+                <div class="card-info"><h3>Campaign<br>Design</h3><span>2024</span></div>
               </div>
-
               <div class="stack-card">
                 <img src="/assets/2.png" alt="">
-                <div class="card-info">
-                  <h3>Brand<br>Identity</h3>
-                  <span>2024</span>
-                </div>
+                <div class="card-info"><h3>Brand<br>Identity</h3><span>2024</span></div>
               </div>
-
               <div class="stack-card">
                 <img src="/assets/3.png" alt="">
-                <div class="card-info">
-                  <h3>Motion<br>Graphics</h3>
-                  <span>2023</span>
-                </div>
+                <div class="card-info"><h3>Motion<br>Graphics</h3><span>2023</span></div>
               </div>
-
               <div class="stack-card">
                 <img src="/assets/4.png" alt="">
-                <div class="card-info">
-                  <h3>Web<br>Design</h3>
-                  <span>2023</span>
-                </div>
+                <div class="card-info"><h3>Web<br>Design</h3><span>2023</span></div>
               </div>
-
               <div class="stack-card">
                 <img src="/assets/5.png" alt="">
-                <div class="card-info">
-                  <h3>Branding<br>System</h3>
-                  <span>2023</span>
-                </div>
+                <div class="card-info"><h3>Branding<br>System</h3><span>2023</span></div>
               </div>
-
             </div>
-
           </div>
 
-          <!-- RIGHT -->
+          <!-- RIGHT: thumbnails -->
           <div class="thumbs">
-
-            <div class="thumb active" data-index="0">
-              <img src="/assets/1.png" alt="">
-            </div>
-
-            <div class="thumb" data-index="1">
-              <img src="/assets/2.png" alt="">
-            </div>
-
-            <div class="thumb" data-index="2">
-              <img src="/assets/3.png" alt="">
-            </div>
-
-            <div class="thumb" data-index="3">
-              <img src="/assets/4.png" alt="">
-            </div>
-
-            <div class="thumb" data-index="4">
-              <img src="/assets/5.png" alt="">
-            </div>
-
+            <div class="thumb active" data-index="0"><img src="/assets/1.png" alt=""></div>
+            <div class="thumb" data-index="1"><img src="/assets/2.png" alt=""></div>
+            <div class="thumb" data-index="2"><img src="/assets/3.png" alt=""></div>
+            <div class="thumb" data-index="3"><img src="/assets/4.png" alt=""></div>
+            <div class="thumb" data-index="4"><img src="/assets/5.png" alt=""></div>
           </div>
 
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </section>
 
+<!-- ===================== LARAVEL ===================== -->
 <section class="laravel">
 
     <div class="laravel-header">
@@ -362,59 +253,53 @@ From wireframes to working applications, I like building solutions where design 
     </div>
 
 </section>
-
+<!-- ===================== CONTACT ===================== -->
 <section class="touch" id="touch">
   <p>Feel free to reach out for collaborations, freelance work, or opportunities.</p>
-<a href="mailto:rohanshrestha612@gmail.com" target="_blank">
-    <img class="mailDark" src="/assets/mailDark.png" alt="mail">
-
+  <a href="mailto:rohanshrestha612@gmail.com" target="_blank">
+    <img class="mailDark"  src="/assets/mailDark.png"  alt="mail">
     <img class="mailLight" src="/assets/mailLight.png" alt="mail">
-
     Email Me
-</a>
+  </a>
   <h1>GetInTouch</h1>
 </section>
 
-
-    <footer class="footer">
-        <div class="foot-top reveal">
-            <p>rohanshrestha612@gmail.com</p>
-            <a href="https://github.com/101rohan" target="_blank">
-                <span>GITHUB</span>
-                <span>GITHUB</span>
-            </a>
-            <a href="https://www.linkedin.com/in/rohan-shrestha-3aa283386/" target="_blank">
-                <span>LINKEDIN</span>
-                <span>LINKEDIN</span>
-            </a>
-
-              <div class="logo">
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="foot-top reveal">
+    <p>rohanshrestha612@gmail.com</p>
+    <a href="https://github.com/101rohan" target="_blank">
+      <span>GITHUB</span><span>GITHUB</span>
+    </a>
+    <a href="https://www.linkedin.com/in/rohan-shrestha-3aa283386/" target="_blank">
+      <span>LINKEDIN</span><span>LINKEDIN</span>
+    </a>
+    <div class="logo">
+      <a href="/html/index.html">
+        <img src="/assets/logoDark.png" alt="logo">
+      </a>
+    </div>
+  </div>
+  <div class="foot-btm">
+    <p>@2026</p>
+  </div>
+  <div class="foot-name">
     <a href="/html/index.html">
-      <img src="/assets/logoDark.png" alt="logo">
+      <span>ROHAN</span><span>ROHAN</span>
     </a>
   </div>
-        </div>
-        <div class="foot-btm">
-            <p>@2026</p>
-        </div>
-        <div class="foot-name">
-            <a href="/html/index.html">
-               <span>ROHAN</span>
-               <span>ROHAN</span>
-            </a>
-        </div>
-    </footer>
+</footer>
 
+</div><!-- /smooth-content -->
+</div><!-- /smooth-wrapper -->
+
+<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollSmoother.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
-
-<script src="/js/app.js"></script>
+<script type="module" src="/js/app.js"></script>
 
 </body>
 </html>
