@@ -130,6 +130,7 @@ function wrapForMask(el) {
 })();
 
 
+
 /* ================================================================
    3. ABOUT SECTION  —  Scroll reveals + draggable image + Pretext flow
    ================================================================ */
@@ -528,6 +529,8 @@ window.addEventListener("scroll", () => {
 })();
 
 
-/* ================================================================
-   8. FOOTER  —  Double-span hover-reveal (pure CSS — no JS needed)
-   ================================================================ */
+document.getElementById("contactBtn").addEventListener("click", () => {
+    document.getElementById("touch").scrollIntoView({
+        behavior: "smooth"
+    });
+});

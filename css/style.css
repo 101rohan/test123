@@ -346,7 +346,7 @@ body.dark .dropdownMenu a{
 
 /* CONTACT BUTTON */
 
-.contactBtn a{
+.contactBtn {
     color: #F8F8F8;
     text-decoration: none;
 
