@@ -689,7 +689,7 @@ font-size: 1.125rem;
 
 .imageSection img{
     width:100%;
-    max-width:83.75rem;
+    max-width:48rem;
     height:auto;
 
     display:block;
@@ -778,8 +778,17 @@ font-weight: 600;
 line-height: normal;
 }
 
-.reflectionRight{
+.team{
+display: flex;
+width: 61.875rem;
+justify-content: space-between;
+align-items: flex-start;
 
+    margin:1rem auto 8rem auto;
+}
+
+.team img{
+    max-width: 47.375rem;;
 }
 
 .reflectionRight p{
@@ -791,6 +800,32 @@ font-weight: 400;
 line-height: 1.5625rem; /* 138.889% */
     width: 32.875rem;
 flex-shrink: 0;
+}
+
+
+.bodySolu {
+  width: min(90%, 61.875rem);
+  min-height: 40vh;
+
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical center */
+  align-items: center;     /* horizontal center */
+
+  text-align: center;
+}
+
+
+.bodySop p{
+  color: #A6A6A6;
+font-family: Inter;
+font-size: 1.875rem;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+padding-bottom: 1rem;
 }
 
 .hover{
@@ -808,20 +843,16 @@ flex-shrink: 0;
     height: 48.75rem;
 }
 
+
 .vid{
     width: 100%;
-    max-width: 82.5rem;
-
-    margin: 0 auto;   /* centers the section */
-
-    padding: 6rem 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: #F5F5F5;
+    max-width: 90rem;
     height: 48.75rem;
+
+    margin: 0 auto;
+    background: #F5F5F5;
+
+    position: relative;
 }
 
 .vid video{
@@ -829,10 +860,43 @@ flex-shrink: 0;
     max-width: 50rem;
     height: auto;
 
-    display: block;
+    position: absolute;
+
+
 }
 
+.pVid{
+    width: 100%;
+    max-width: 90rem;
+    height: 35rem;
+    margin: 0 auto;
+    background: #F5F5F5;
+    position: relative;
+}
 
+/* LEFT VIDEO */
+.pVid .prd{
+    position: absolute;
+    width: 55rem;
+
+    top: 4rem;
+    left: 3rem;
+
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+/* RIGHT VIDEO */
+.pVid .cat{
+    position: absolute;
+    width: 24rem;
+
+    top: 7rem;
+    right: 3rem;
+
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
 
 /* FOOTER */
 
