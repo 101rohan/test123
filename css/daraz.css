@@ -774,10 +774,6 @@ font-weight: 600;
 line-height: normal;
 }
 
-.reflectionRight{
-
-}
-
 .reflectionRight p{
 color: #323232;
 font-family: Inter;
@@ -963,4 +959,557 @@ flex-shrink: 0;
 
     top: 100%;
     left: 0;
+}
+
+/* ================================
+   RESPONSIVE STYLES - DARAZ PAGE
+   ================================ */
+
+/* Tablet (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    
+    /* NAVBAR */
+    .navbarLight {
+        padding: 1rem;
+    }
+    
+    .scrollWrapper {
+        display: none;
+    }
+    
+    .divider {
+        display: none;
+    }
+    
+    /* HERO */
+    .hero {
+        padding: 5rem 1rem;
+    }
+    
+    .hero img {
+        max-width: 100%;
+    }
+    
+    /* BODY TEXT */
+    .bodyText {
+        width: 90%;
+    }
+    
+    .bodyTop p,
+    .bodyTop h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bodyBtm {
+        margin-top: 4rem;
+    }
+    
+    .bodyBtm p {
+        width: 100%;
+        font-size: 1rem;
+        padding: 2rem 0;
+    }
+    
+    /* SALE SECTION */
+    .sale {
+        margin: 4rem 0;
+    }
+    
+    .sale img {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .sale video {
+        width: 300px;
+        margin-top: 3rem;
+    }
+    
+    /* BODY PROJECT SECTIONS */
+    .bodyProject {
+        width: 90%;
+        margin: 5rem auto;
+        gap: 2rem;
+    }
+    
+    .bodyLeft {
+        width: 16rem;
+    }
+    
+    .bodyLeft p,
+    .bodyLeft h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bodyRight {
+        max-width: 26rem;
+    }
+    
+    .bodyRight h1 {
+        font-size: 1rem;
+        line-height: 1.4rem;
+    }
+    
+    .bodyRight p {
+        font-size: 0.95rem;
+        line-height: 1.5rem;
+    }
+    
+    .bodyRight span {
+        font-size: 0.95rem;
+    }
+    
+    /* SOLUTION SECTION */
+    .bodySolu {
+        width: 90%;
+    }
+    
+    .bodySop p {
+        font-size: 1.5rem;
+    }
+    
+    .bodySop h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bodyBtm img {
+        max-width: 100%;
+    }
+    
+    /* CONTENT COLUMNS */
+    .contentColumn {
+        width: 90%;
+    }
+    
+    .sectionHeading {
+        font-size: 1.5rem;
+        margin: 5rem 0 2rem;
+    }
+    
+    /* IMAGE SECTIONS */
+    .imageSection {
+        margin-left: 2rem;
+    }
+    
+    .imageSection img {
+        max-width: 100%;
+    }
+    
+    .sectionCaption {
+        font-size: 1rem;
+        margin-bottom: 5rem;
+    }
+    
+    /* SPLIT HEADER */
+    .splitHeader {
+        width: 100%;
+        gap: 3rem;
+        margin: 5rem 0 3rem;
+    }
+    
+    .splitHeader h1 {
+        font-size: 1.5rem;
+    }
+    
+    .splitHeader p {
+        max-width: 22rem;
+        font-size: 1rem;
+        line-height: 1.4rem;
+    }
+    
+    /* VIDEO SECTION */
+    .vid {
+        height: 35rem;
+        padding: 4rem 0;
+    }
+    
+    .vid video {
+        max-width: 40rem;
+    }
+    
+    /* REFLECTION */
+    .reflection {
+        width: 90%;
+        margin: 5rem auto;
+        gap: 3rem;
+    }
+    
+    .reflectionLeft {
+        max-width: 20rem;
+    }
+    
+    .reflectionLeft p {
+        font-size: 1.5rem;
+    }
+    
+    .reflectionLeft h1 {
+        font-size: 1.5rem;
+    }
+    
+    .reflectionRight p {
+        width: 100%;
+        font-size: 1rem;
+    }
+    
+    /* FOOTER */
+    .footer {
+        height: 320px;
+        padding: 16px 16px 0 16px;
+    }
+    
+    .foot-top {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .foot-name a {
+        font-size: 180px;
+        letter-spacing: -8px;
+    }
+    
+    .foot-btm {
+        bottom: 28px;
+    }
+}
+
+/* Mobile (320px - 767px) */
+@media screen and (max-width: 767px) {
+    
+    /* NAVBAR */
+    .navbarLight {
+        padding: 0.8rem;
+        align-items: center;
+    }
+    
+    .logo img {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+    
+    .menuBtn {
+        height: 2rem;
+        padding: 0.3rem 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .menuText {
+        font-size: 0.75rem;
+    }
+    
+    .scrollWrapper {
+        display: none;
+    }
+    
+    .divider {
+        display: none;
+    }
+    
+    .contactBtn {
+        width: 5rem;
+        height: 2rem;
+        font-size: 0.7rem;
+    }
+    
+    .dropdownMenu {
+        width: 11rem;
+        padding: 3.5rem 1.2rem 1.2rem 1.2rem;
+        border-radius: 1.5rem;
+    }
+    
+    .dropdownMenu a {
+        font-size: 0.9rem;
+    }
+    
+    /* HERO */
+    .hero {
+        padding: 4rem 0.5rem;
+    }
+    
+    /* BODY TEXT */
+    .bodyText {
+        width: 92%;
+    }
+    
+    .bodyTop p,
+    .bodyTop h1 {
+        font-size: 1.2rem;
+    }
+    
+    .bodyBtm {
+        margin-top: 2rem;
+    }
+    
+    .bodyBtm p {
+        width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.5rem;
+        padding: 1.5rem 0;
+    }
+    
+    /* SALE SECTION */
+    .sale {
+        margin: 3rem 0;
+    }
+    
+    .sale img {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .sale video {
+        width: 250px;
+        margin-top: 2rem;
+    }
+    
+    /* BODY PROJECT SECTIONS */
+    .bodyProject {
+        width: 92%;
+        margin: 3rem auto;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .bodyLeft {
+        width: 100%;
+    }
+    
+    .bodyLeft p,
+    .bodyLeft h1 {
+        font-size: 1.2rem;
+    }
+    
+    .bodyRight {
+        max-width: 100%;
+    }
+    
+    .bodyRight h1 {
+        font-size: 0.95rem;
+        line-height: 1.4rem;
+        padding-bottom: 0.75rem;
+    }
+    
+    .bodyRight p {
+        font-size: 0.9rem;
+        line-height: 1.5rem;
+    }
+    
+    .bodyRight span {
+        font-size: 0.9rem;
+    }
+    
+    /* SOLUTION SECTION */
+    .bodySolu {
+        width: 92%;
+    }
+    
+    .bodySop p {
+        font-size: 1.2rem;
+    }
+    
+    .bodySop h1 {
+        font-size: 1.2rem;
+    }
+    
+    .bodyBtm {
+        margin-top: 2rem;
+    }
+    
+    .bodyBtm img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* CONTENT COLUMNS */
+    .contentColumn {
+        width: 92%;
+    }
+    
+    .sectionHeading {
+        font-size: 1.2rem;
+        margin: 3rem 0 1.5rem;
+    }
+    
+    /* IMAGE SECTIONS */
+    .imageSection {
+        margin-left: 0;
+        padding: 0 1rem;
+    }
+    
+    .imageSection img {
+        max-width: 100%;
+    }
+    
+    .sectionCaption {
+        font-size: 0.85rem;
+        margin-bottom: 3rem;
+        padding: 0 1rem;
+    }
+    
+    /* SPLIT HEADER */
+    .splitHeader {
+        width: 100%;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 3rem 0 2rem;
+    }
+    
+    .splitHeader h1 {
+        font-size: 1.2rem;
+    }
+    
+    .splitHeader p {
+        max-width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.4rem;
+    }
+    
+    /* VIDEO SECTION */
+    .vid {
+        height: auto;
+        min-height: 20rem;
+        padding: 2rem 1rem;
+    }
+    
+    .vid video {
+        max-width: 100%;
+    }
+    
+    /* REFLECTION */
+    .reflection {
+        width: 92%;
+        margin: 3rem auto;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .reflectionLeft {
+        max-width: 100%;
+    }
+    
+    .reflectionLeft p {
+        font-size: 1.2rem;
+    }
+    
+    .reflectionLeft h1 {
+        font-size: 1.2rem;
+    }
+    
+    .reflectionRight p {
+        width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.5rem;
+    }
+    
+    /* FOOTER */
+    .footer {
+        height: auto;
+        min-height: 250px;
+        padding: 16px 12px 12px 12px;
+    }
+    
+    .foot-top {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .foot-top p,
+    .foot-top a {
+        font-size: 11px;
+    }
+    
+    .foot-top .logo {
+        margin-left: 0;
+        order: -1;
+    }
+    
+    .foot-top .logo img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    
+    .foot-name a {
+        font-size: 100px;
+        letter-spacing: -4px;
+    }
+    
+    .foot-btm {
+        bottom: 20px;
+        left: 0.75rem;
+    }
+    
+    .foot-btm p {
+        font-size: 11px;
+    }
+    
+    .foot-name {
+        bottom: 8px;
+        right: 0.75rem;
+    }
+}
+
+/* Small Mobile (320px - 480px) */
+@media screen and (max-width: 480px) {
+    
+    .bodyTop p,
+    .bodyTop h1 {
+        font-size: 1rem;
+    }
+    
+    .bodyBtm p {
+        font-size: 0.85rem;
+    }
+    
+    .sale video {
+        width: 200px;
+        margin-top: 1.5rem;
+    }
+    
+    .bodyProject {
+        margin: 2rem auto;
+    }
+    
+    .bodyLeft p,
+    .bodyLeft h1 {
+        font-size: 1rem;
+    }
+    
+    .bodyRight h1 {
+        font-size: 0.85rem;
+    }
+    
+    .bodyRight p {
+        font-size: 0.85rem;
+        line-height: 1.4rem;
+    }
+    
+    .bodyRight span {
+        font-size: 0.85rem;
+    }
+    
+    .sectionHeading {
+        font-size: 1rem;
+        margin: 2rem 0 1rem;
+    }
+    
+    .vid {
+        min-height: 15rem;
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .reflectionLeft p {
+        font-size: 1rem;
+    }
+    
+    .reflectionLeft h1 {
+        font-size: 1rem;
+    }
+    
+    .reflectionRight p {
+        font-size: 0.85rem;
+    }
+    
+    .foot-name a {
+        font-size: 70px;
+        letter-spacing: -3px;
+    }
 }

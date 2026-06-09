@@ -131,6 +131,7 @@ function wrapForMask(el) {
 
 
 
+
 /* ================================================================
    3. ABOUT SECTION  —  Scroll reveals + draggable image + Pretext flow
    ================================================================ */
@@ -147,6 +148,7 @@ function wrapForMask(el) {
     abtTl.from(".abt-text",    { y: 80, opacity: 0, stagger: 0.2, duration: 1, ease: "power3.out" }, "-=0.8");
 
 
+    
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        PRETEXT — dynamic text reflow around the draggable photo
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -359,6 +361,7 @@ function wrapForMask(el) {
 })();
 
 
+
 /* ================================================================
    4. NAVBAR  —  Menu toggle + dark-mode toggle + scroll progress
    ================================================================ */
@@ -477,6 +480,42 @@ window.addEventListener("scroll", () => {
     updateWorkOnScroll();
 })();
 
+/* ================================================================
+   5.5 WORK HEADER REVEAL ANIMATION
+   ================================================================ */
+
+(function initWorkHeaderReveal() {
+  const workHeaderMask = document.querySelector('.work-header-mask');
+  if (!workHeaderMask) return;
+
+  const revealElements = workHeaderMask.querySelectorAll('.reveal');
+  
+  // Create an Intersection Observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Add 'revealed' class when the header comes into view
+        revealElements.forEach(el => {
+          el.classList.add('revealed');
+        });
+        
+        // Stop observing after animation triggers
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2, // Trigger when 20% of the element is visible
+    rootMargin: '0px 0px -50px 0px' // Slight offset for better timing
+  });
+
+  // Start observing the header mask
+  observer.observe(workHeaderMask);
+  
+  // Reset classes on page load (in case of hot reload)
+  revealElements.forEach(el => {
+    el.classList.remove('revealed');
+  });
+})();
 
 /* ================================================================
    6. LARAVEL SECTION  —  Scroll-triggered entrance
@@ -534,3 +573,5 @@ document.getElementById("contactBtn").addEventListener("click", () => {
         behavior: "smooth"
     });
 });
+
+

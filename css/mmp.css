@@ -1048,3 +1048,581 @@ padding-bottom: 1rem;
     left: 0;
 }
 
+/* ================================
+   RESPONSIVE STYLES - MMP PAGE
+   ================================ */
+
+/* Tablet (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    
+    /* NAVBAR */
+    .navbarLight {
+        padding: 1rem;
+    }
+    
+    .scrollWrapper {
+        display: none;
+    }
+    
+    .divider {
+        display: none;
+    }
+    
+    /* HERO */
+    .hero {
+        padding: 5rem 1rem;
+    }
+    
+    .hero img {
+        max-width: 100%;
+    }
+    
+    /* BODY TEXT */
+    .bodyText {
+        width: 90%;
+    }
+    
+    .bodyTop p,
+    .bodyTop h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bodyBtm {
+        margin-top: 4rem;
+    }
+    
+    .bodyBtm p {
+        width: 100%;
+        font-size: 1rem;
+        padding: 2rem 0;
+    }
+    
+    /* INFO TABLE */
+    .info {
+        width: 90%;
+        margin: 4rem auto;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .table {
+        flex: 1 1 180px;
+        min-width: 150px;
+    }
+    
+    .table h1 {
+        font-size: 1rem;
+    }
+    
+    .table p {
+        font-size: 0.85rem;
+        min-width: auto;
+    }
+    
+    /* HOVER VIDEO */
+    .hover {
+        height: 35rem;
+        padding: 4rem 0;
+    }
+    
+    /* BODY PROJECT SECTIONS */
+    .bodyProject {
+        width: 90%;
+        margin: 5rem auto;
+        gap: 3rem;
+    }
+    
+    .bodyLeft {
+        width: 18rem;
+    }
+    
+    .bodyLeft p,
+    .bodyLeft h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bodyRight {
+        max-width: 28rem;
+    }
+    
+    .bodyRight p {
+        font-size: 1rem;
+        line-height: 1.6rem;
+    }
+    
+    .bodyProject img {
+        width: 10rem;
+    }
+    
+    /* PRODUCT VIDEO SECTION */
+    .pVid {
+        height: 28rem;
+    }
+    
+    .pVid .prd {
+        width: 40rem;
+        top: 3rem;
+        left: 2rem;
+    }
+    
+    .pVid .cat {
+        width: 18rem;
+        top: 5rem;
+        right: 2rem;
+    }
+    
+    /* SOLUTION SECTION */
+    .bodySolu {
+        width: 90%;
+    }
+    
+    .bodySop p {
+        font-size: 1.5rem;
+    }
+    
+    .bodySop h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bodyBtm img {
+        max-width: 100%;
+    }
+    
+    /* TEAM IMAGE */
+    .team {
+        width: 90%;
+        margin: 1rem auto 5rem auto;
+    }
+    
+    .team img {
+        max-width: 100%;
+    }
+    
+    /* CONTENT COLUMNS */
+    .contentColumn {
+        width: 90%;
+    }
+    
+    .sectionHeading {
+        font-size: 1.5rem;
+        margin: 5rem 0 2rem;
+    }
+    
+    /* IMAGE SECTIONS */
+    .imageSection {
+        margin-left: 2rem;
+    }
+    
+    .imageSection img {
+        max-width: 40rem;
+    }
+    
+    .sectionCaption {
+        font-size: 0.9rem;
+        margin-bottom: 5rem;
+    }
+    
+    /* REFLECTION */
+    .reflection {
+        width: 90%;
+        margin: 5rem auto;
+        gap: 3rem;
+    }
+    
+    .reflectionLeft {
+        max-width: 20rem;
+    }
+    
+    .reflectionLeft p,
+    .reflectionLeft h1 {
+        font-size: 1.5rem;
+    }
+    
+    .reflectionRight p {
+        width: 100%;
+        font-size: 1rem;
+    }
+    
+    /* FOOTER */
+    .footer {
+        height: 320px;
+        padding: 16px 16px 0 16px;
+    }
+    
+    .foot-top {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .foot-name a {
+        font-size: 180px;
+        letter-spacing: -8px;
+    }
+    
+    .foot-btm {
+        bottom: 28px;
+    }
+}
+
+/* Mobile (320px - 767px) */
+@media screen and (max-width: 767px) {
+    
+    /* NAVBAR */
+    .navbarLight {
+        padding: 0.8rem;
+        align-items: center;
+    }
+    
+    .logo img {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+    
+    .menuBtn {
+        height: 2rem;
+        padding: 0.3rem 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .menuText {
+        font-size: 0.75rem;
+    }
+    
+    .scrollWrapper {
+        display: none;
+    }
+    
+    .divider {
+        display: none;
+    }
+    
+    .contactBtn {
+        width: 5rem;
+        height: 2rem;
+        font-size: 0.7rem;
+    }
+    
+    .dropdownMenu {
+        width: 11rem;
+        padding: 3.5rem 1.2rem 1.2rem 1.2rem;
+        border-radius: 1.5rem;
+    }
+    
+    .dropdownMenu a {
+        font-size: 0.9rem;
+    }
+    
+    /* HERO */
+    .hero {
+        padding: 4rem 0.5rem;
+    }
+    
+    /* BODY TEXT */
+    .bodyText {
+        width: 92%;
+    }
+    
+    .bodyTop p,
+    .bodyTop h1 {
+        font-size: 1.2rem;
+    }
+    
+    .bodyTop {
+        padding-top: 0.5rem;
+    }
+    
+    .bodyBtm {
+        margin-top: 2rem;
+    }
+    
+    .bodyBtm p {
+        width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.5rem;
+        padding: 1.5rem 0;
+    }
+    
+    /* INFO TABLE */
+    .info {
+        width: 92%;
+        margin: 3rem auto;
+        gap: 1.5rem;
+        flex-direction: column;
+    }
+    
+    .table {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+        align-items: baseline;
+    }
+    
+    .table h1 {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+        min-width: 60px;
+    }
+    
+    .table p {
+        font-size: 0.85rem;
+        min-width: auto;
+    }
+    
+    /* HOVER VIDEO */
+    .hover {
+        height: 20rem;
+        padding: 2rem 0;
+    }
+    
+    /* BODY PROJECT SECTIONS */
+    .bodyProject {
+        width: 92%;
+        margin: 3rem auto;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .bodyLeft {
+        width: 100%;
+    }
+    
+    .bodyLeft p,
+    .bodyLeft h1 {
+        font-size: 1.2rem;
+    }
+    
+    .bodyRight {
+        max-width: 100%;
+    }
+    
+    .bodyRight p {
+        font-size: 0.9rem;
+        line-height: 1.5rem;
+    }
+    
+    .bodyProject img {
+        width: 8rem;
+        margin-top: 1rem;
+    }
+    
+    /* PRODUCT VIDEO SECTION */
+    .pVid {
+        height: auto;
+        min-height: 20rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        background: #F5F5F5;
+    }
+    
+    .pVid .prd,
+    .pVid .cat {
+        position: static;
+        width: 100%;
+        border-radius: 0.5rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    
+    /* SOLUTION SECTION */
+    .bodySolu {
+        width: 92%;
+        min-height: auto;
+        padding: 3rem 0;
+    }
+    
+    .bodySop p {
+        font-size: 1.2rem;
+    }
+    
+    .bodySop h1 {
+        font-size: 1.2rem;
+    }
+    
+    .bodyBtm {
+        margin-top: 2rem;
+    }
+    
+    .bodyBtm img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* TEAM IMAGE */
+    .team {
+        width: 92%;
+        margin: 1rem auto 3rem auto;
+    }
+    
+    .team img {
+        max-width: 100%;
+    }
+    
+    /* CONTENT COLUMNS */
+    .contentColumn {
+        width: 92%;
+    }
+    
+    .sectionHeading {
+        font-size: 1.2rem;
+        margin: 3rem 0 1.5rem;
+    }
+    
+    /* IMAGE SECTIONS */
+    .imageSection {
+        margin-left: 0;
+        padding: 0 1rem;
+    }
+    
+    .imageSection img {
+        max-width: 100%;
+    }
+    
+    .sectionCaption {
+        font-size: 0.85rem;
+        margin-bottom: 3rem;
+        padding: 0 1rem;
+    }
+    
+    /* SPLIT HEADER */
+    .splitHeader {
+        width: 92%;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 3rem auto;
+    }
+    
+    .splitHeader h1 {
+        font-size: 1.2rem;
+    }
+    
+    .splitHeader p {
+        max-width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.4rem;
+    }
+    
+    /* REFLECTION */
+    .reflection {
+        width: 92%;
+        margin: 3rem auto;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .reflectionLeft {
+        max-width: 100%;
+    }
+    
+    .reflectionLeft p,
+    .reflectionLeft h1 {
+        font-size: 1.2rem;
+    }
+    
+    .reflectionRight p {
+        width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.5rem;
+    }
+    
+    /* FOOTER */
+    .footer {
+        height: auto;
+        min-height: 250px;
+        padding: 16px 12px 12px 12px;
+    }
+    
+    .foot-top {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .foot-top p,
+    .foot-top a {
+        font-size: 11px;
+    }
+    
+    .foot-top .logo {
+        margin-left: 0;
+        order: -1;
+    }
+    
+    .foot-top .logo img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    
+    .foot-name a {
+        font-size: 100px;
+        letter-spacing: -4px;
+    }
+    
+    .foot-btm {
+        bottom: 20px;
+        left: 0.75rem;
+    }
+    
+    .foot-btm p {
+        font-size: 11px;
+    }
+    
+    .foot-name {
+        bottom: 8px;
+        right: 0.75rem;
+    }
+}
+
+/* Small Mobile (320px - 480px) */
+@media screen and (max-width: 480px) {
+    
+    .bodyTop p,
+    .bodyTop h1 {
+        font-size: 1rem;
+    }
+    
+    .bodyBtm p {
+        font-size: 0.85rem;
+    }
+    
+    .hover {
+        height: 15rem;
+        padding: 1rem 0;
+    }
+    
+    .pVid {
+        min-height: 15rem;
+    }
+    
+    .bodyProject {
+        margin: 2rem auto;
+    }
+    
+    .bodyLeft p,
+    .bodyLeft h1 {
+        font-size: 1rem;
+    }
+    
+    .bodyRight p {
+        font-size: 0.85rem;
+        line-height: 1.4rem;
+    }
+    
+    .sectionHeading {
+        font-size: 1rem;
+        margin: 2rem 0 1rem;
+    }
+    
+    .reflectionLeft p,
+    .reflectionLeft h1 {
+        font-size: 1rem;
+    }
+    
+    .reflectionRight p {
+        font-size: 0.85rem;
+    }
+    
+    .foot-name a {
+        font-size: 70px;
+        letter-spacing: -3px;
+    }
+}
