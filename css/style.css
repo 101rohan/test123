@@ -1920,8 +1920,8 @@ body.dark .project a { color: #D4D4D4; }
     opacity: .3;
     cursor: pointer;
     position: relative;
-    top: -106px;
-    left: 0;
+    top: -6.625;
+    left: 11.875rem;
     transition: opacity .45s ease, transform .45s ease;
 }
 
