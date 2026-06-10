@@ -89,7 +89,7 @@ body.dark .menuBtn {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 1.5px;
+    height: 0.09375rem; /* 1.5px */
     background: #F8F8F8;
     border-radius: 999px;
     transition: all 0.3s ease;
@@ -110,7 +110,7 @@ body.dark .menuBtn {
 /* DIVIDER */
 
 .divider {
-    width: 1px;
+    width: 0.0625rem; /* 1px */
     height: 1rem;
     background: rgba(255,255,255,0.15);
     flex-shrink: 0;
@@ -134,7 +134,7 @@ body.dark .menuBtn {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 0.25px solid rgba(255,255,255,0.35);
+    border: 0.015625rem solid rgba(255,255,255,0.35); /* 0.25px */
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -199,7 +199,7 @@ body.dark .scrollFill { background: #8E8E8E; }
     position: absolute;
     top: -0.35rem;
     left: 50%;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateX(-50%) translateY(-0.625rem); /* -10px */
     width: 13.4rem;
     padding: 4rem 1.4rem 1.4rem 1.4rem;
     border-radius: 2rem;
@@ -349,10 +349,10 @@ body.dark .heroName { color: #F8F8F8; }
     width: 8rem;
     height: 8rem;
     border-radius: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem; /* 20px */
     overflow: hidden;
     flex-shrink: 0;
-    border: 1px solid rgba(248,248,248,0.40);
+    border: 0.0625rem solid rgba(248,248,248,0.40); /* 1px */
 }
 
 .imgCircle img {
@@ -385,19 +385,19 @@ body.dark .about {
     font-family: "Instrument Serif";
     font-size: clamp(4rem, 9vw, 7rem);
     line-height: 0.92;
-    letter-spacing: -3px;
+    letter-spacing: -0.1875rem; /* -3px */
 }
 
 .abt-head {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: 0.625rem; /* 10px */
 }
 
 .small-head {
     font-size: clamp(1.6rem, 3vw, 3.5rem);
     font-weight: 400;
-    letter-spacing: 1px;
+    letter-spacing: 0.0625rem; /* 1px */
 }
 
 .abt-body {
@@ -414,7 +414,7 @@ body.dark .about {
     color: #C8C8C8;
     font-size: 1.125rem;
     font-weight: 600;
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem; /* 18px */
 }
 
 body.dark .abt-label { color: #7A7A7A; }
@@ -424,7 +424,7 @@ body.dark .abt-label { color: #7A7A7A; }
     font-size: 1.15rem;
     line-height: 1.32;
     color: #2A2A2A;
-    margin-bottom: 22px;
+    margin-bottom: 1.375rem; /* 22px */
     display: block;
     width: 100%;
 }
@@ -462,17 +462,17 @@ body.dark .abt-canvas { color: #D4D4D4; }
 }
 
 .me.dragging {
-    box-shadow: 0 20px 48px rgba(0,0,0,0.22);
+    box-shadow: 0 1.25rem 3rem rgba(0,0,0,0.22); /* 20px 48px */
     cursor: grabbing;
 }
 
-body.dark .me { border: 1px solid rgba(248,248,248,0.30); }
+body.dark .me { border: 0.0625rem solid rgba(248,248,248,0.30); } /* 1px */
 
 /* EMAIL CONNECT */
 
 .connect {
-    margin-top: 8px;
-    margin-bottom: 14px;
+    margin-top: 0.5rem; /* 8px */
+    margin-bottom: 0.875rem; /* 14px */
     font-size: 2rem;
     font-family: "Instrument Serif";
 }
@@ -509,9 +509,9 @@ body.dark .work-section { background: #171717; }
 }
 
 .work-inner {
-    width: 1100px;
+    width: 68.75rem; /* 1100px */
     margin: 0;
-    padding-inline: 20px;
+    padding-inline: 1.25rem; /* 20px */
 }
 
 .work-header { padding: 8rem 0 0; }
@@ -541,8 +541,8 @@ body.dark .work-header p { color: #B0B0B0; }
 .work-layout {
     position: relative;
     display: grid;
-    grid-template-columns: 320px 1fr 120px;
-    gap: 0 160px;
+    grid-template-columns: 20rem 1fr 7.5rem; /* 320px 1fr 120px */
+    gap: 0 10rem; /* 160px */
     margin-top: 8rem;
 }
 
@@ -555,9 +555,9 @@ body.dark .work-header p { color: #B0B0B0; }
 
 .project {
     display: flex;
-    gap: 14px;
+    gap: 0.875rem; /* 14px */
     align-items: baseline;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem; /* 20px */
     opacity: .28;
     cursor: pointer;
     transition: opacity .45s ease, transform .45s ease;
@@ -592,7 +592,7 @@ body.dark .project a { color: #D4D4D4; }
     display: flex;
     align-items: center;
     justify-content: center;
-    perspective: 2400px;
+    perspective: 150rem; /* 2400px */
     transform-style: preserve-3d;
 }
 
@@ -604,14 +604,14 @@ body.dark .project a { color: #D4D4D4; }
 
 .stack-card {
     position: absolute;
-    top: -100px;
-    left: -10px;
+    top: -6.25rem; /* -100px */
+    left: -0.625rem; /* -10px */
     width: 100%;
     height: 100%;
     overflow: hidden;
     transform: translateZ(0);
     transition: opacity 0.4s ease, transform 0.4s ease;
-    border: 0.67px solid #cdcbcb;
+    border: 0.041875rem solid #cdcbcb; /* 0.67px */
 }
 
 .stack-card img {
@@ -652,7 +652,7 @@ body.dark .project a { color: #D4D4D4; }
 .thumbs {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.75rem; /* 12px */
     justify-content: center;
 }
 
@@ -664,16 +664,15 @@ body.dark .project a { color: #D4D4D4; }
     opacity: 0.2;
     cursor: pointer;
     position: relative;
-    top: -6.25rem;
+    top: -6.25rem; /* -100px */
     left: 12rem;
-    border: 1px solid #cdcbcb;
+    border: 0.0625rem solid #cdcbcb; /* 1px */
     transition: opacity .45s ease, transform .45s ease;
 }
 
 .thumb.active {
     opacity: 1;
-    transform: scale(1.04) translateX(-2px);
-
+    transform: scale(1.04) translateX(-0.125rem); /* -2px */
 }
 
 .thumb img {
@@ -689,18 +688,18 @@ body.dark .project a { color: #D4D4D4; }
 
 .laravel {
     position: relative;
-    padding-top: 100px;
+    padding-top: 6.25rem; /* 100px */
 }
 
 .laravel-header {
     position: relative;
-    height: 120px;
-    margin: 0 20px;
+    height: 7.5rem; /* 120px */
+    margin: 0 1.25rem; /* 20px */
 }
 
 .project-title {
     font-family: "Instrument Serif";
-    font-size: 96px;
+    font-size: 6rem; /* 96px */
     line-height: 1;
     margin: 0;
     position: absolute;
@@ -711,15 +710,15 @@ body.dark .project a { color: #D4D4D4; }
 .github-btn {
     position: absolute;
     right: 0;
-    bottom: 12px;
+    bottom: 0.75rem; /* 12px */
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 12px 14px;
+    gap: 0.4375rem; /* 7px */
+    padding: 0.75rem 0.875rem; /* 12px 14px */
     background: #171717;
     color: #F8F8F8;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 0.25rem; /* 4px */
     width: 6.1875rem;
 }
 
@@ -731,13 +730,13 @@ body.dark .project a { color: #D4D4D4; }
 }
 
 .github-btn img {
-    width: 13px;
-    height: 13px;
+    width: 0.8125rem; /* 13px */
+    height: 0.8125rem; /* 13px */
     transition: filter 0.35s ease;
 }
 
 .section-line {
-    height: 1px;
+    height: 0.0625rem; /* 1px */
     background: #171717;
     width: 100%;
     transform-origin: left center;
@@ -746,14 +745,14 @@ body.dark .project a { color: #D4D4D4; }
 
 .project-card {
     background: #171717;
-    min-height: 500px;
-    border-radius: 8px;
+    min-height: 31.25rem; /* 500px */
+    border-radius: 0.5rem; /* 8px */
 }
 
 .project-card p {
     color: #F8F8F8;
-    padding: 20px;
-    font-size: 18px;
+    padding: 1.25rem; /* 20px */
+    font-size: 1.125rem; /* 18px */
 }
 
 /* LARAVEL — dark mode */
@@ -846,8 +845,8 @@ body.dark .mailLight { display: block; }
     background: #171717;
     position: relative;
     overflow: hidden;
-    height: 420px;
-    padding: 20px 20px 0 20px;
+    height: 26.25rem; /* 420px */
+    padding: 1.25rem 1.25rem 0 1.25rem; /* 20px */
 }
 
 .logo {
@@ -873,22 +872,22 @@ body.dark .mailLight { display: block; }
 .foot-top {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 1.25rem; /* 20px */
 }
 
 .foot-top p {
     color: #F8F8F8;
-    font-size: 13px;
+    font-size: 0.8125rem; /* 13px */
     font-weight: 400;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.0125rem; /* 0.2px */
 }
 
 .foot-top a {
     color: #F8F8F8;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 0.8125rem; /* 13px */
     font-weight: 500;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.05rem; /* 0.8px */
     position: relative;
     overflow: hidden;
     display: inline-block;
@@ -910,19 +909,19 @@ body.dark .mailLight { display: block; }
 
 .foot-btm {
     position: absolute;
-    bottom: 36px;
+    bottom: 2.25rem; /* 36px */
     left: 1.25rem;
 }
 
 .foot-btm p {
     color: #F8F8F8;
-    font-size: 13px;
+    font-size: 0.8125rem; /* 13px */
     font-weight: 400;
 }
 
 .foot-name {
     position: absolute;
-    bottom: 11px;
+    bottom: 0.6875rem; /* 11px */
     right: 1.25rem;
     overflow: hidden;
     display: inline-block;
@@ -932,9 +931,9 @@ body.dark .mailLight { display: block; }
 .foot-name a {
     color: #F8F8F8;
     text-decoration: none;
-    font-size: 280px;
+    font-size: 17.5rem; /* 280px */
     font-weight: 600;
-    letter-spacing: -12px;
+    letter-spacing: -0.75rem; /* -12px */
     display: block;
     position: relative;
     line-height: 0.9;
@@ -1020,7 +1019,7 @@ body.dark .mailLight { display: block; }
 
 .abt-flow-container {
     position: relative;
-    width: 25rem;   /* explicit width — absolute children don't create intrinsic width */
+    width: 25rem;
     font-size: 1.15rem;
     line-height: 1.32;
     color: #2A2A2A;
@@ -1048,7 +1047,7 @@ body.dark .abt-flow-container {
 
 .work-header-mask .abt-head,
 .work-header-mask .abt-headbtm {
-  overflow: hidden; /* This creates the mask effect */
+  overflow: hidden;
 }
 
 .work-header-mask .abt-head span,
@@ -1074,7 +1073,7 @@ body.dark .abt-flow-container {
   color: #7b7b7b;
   font-size: 1.2rem;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(1.25rem); /* 20px */
   transition: opacity 0.8s ease, transform 0.8s ease;
   transition-delay: 0.3s;
 }
@@ -1102,21 +1101,21 @@ body.dark .work-sub {
 }
 
 .project-card-link:hover {
-    transform: translateY(-4px);
+    transform: translateY(-0.25rem); /* -4px */
 }
 
 .project-card-link:hover .project-card {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.5rem 1.875rem rgba(0, 0, 0, 0.15); /* 8px 30px */
 }
 
 .project-card-link .project-card {
-    margin: 0; /* Remove the margin since it's now on the link */
+    margin: 0;
     transition: box-shadow 0.3s ease;
 }
 
 /* Dark mode hover effects */
 body.dark .project-card-link:hover .project-card {
-    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0.5rem 1.875rem rgba(255, 255, 255, 0.1); /* 8px 30px */
 }
 
 
@@ -1183,7 +1182,7 @@ body.dark .project-card-link:hover .project-card {
     
     .abt-text {
         max-width: 100%;
-        flex: 1 1 300px;
+        flex: 1 1 18.75rem; /* 300px */
     }
     
     .me-wrapper {
@@ -1217,7 +1216,7 @@ body.dark .project-card-link:hover .project-card {
     .work-inner {
         width: 100%;
         max-width: 100%;
-        padding-inline: 20px;
+        padding-inline: 1.25rem; /* 20px */
     }
     
     .work-header {
@@ -1233,14 +1232,14 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .work-layout {
-        grid-template-columns: 200px 1fr 80px;
-        gap: 0 30px;
+        grid-template-columns: 12.5rem 1fr 5rem; /* 200px 1fr 80px */
+        gap: 0 1.875rem; /* 30px */
         margin-top: 3rem;
     }
     
     .project {
-        margin-bottom: 14px;
-        gap: 8px;
+        margin-bottom: 0.875rem; /* 14px */
+        gap: 0.5rem; /* 8px */
         flex-wrap: wrap;
     }
     
@@ -1259,8 +1258,8 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .stack-card {
-        top: -60px;
-        left: -5px;
+        top: -3.75rem; /* -60px */
+        left: -0.3125rem; /* -5px */
     }
     
     .card-info {
@@ -1272,7 +1271,7 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .thumbs {
-        gap: 10px;
+        gap: 0.625rem; /* 10px */
         justify-content: flex-start;
     }
     
@@ -1286,12 +1285,12 @@ body.dark .project-card-link:hover .project-card {
     
     /* LARAVEL */
     .laravel {
-        padding-top: 60px;
+        padding-top: 3.75rem; /* 60px */
     }
     
     .laravel-header {
-        height: 100px;
-        margin: 0 16px;
+        height: 6.25rem; /* 100px */
+        margin: 0 1rem; /* 16px */
     }
     
     .project-title {
@@ -1299,13 +1298,13 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .github-btn {
-        bottom: 8px;
-        padding: 10px 12px;
+        bottom: 0.5rem; /* 8px */
+        padding: 0.625rem 0.75rem; /* 10px 12px */
         width: auto;
     }
     
     .project-card {
-        min-height: 350px;
+        min-height: 21.875rem; /* 350px */
         margin: 1rem;
     }
     
@@ -1323,22 +1322,22 @@ body.dark .project-card-link:hover .project-card {
     
     /* FOOTER */
     .footer {
-        height: 320px;
-        padding: 16px 16px 0 16px;
+        height: 20rem; /* 320px */
+        padding: 1rem 1rem 0 1rem; /* 16px */
     }
     
     .foot-top {
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 0.75rem; /* 12px */
     }
     
     .foot-name a {
-        font-size: 180px;
-        letter-spacing: -8px;
+        font-size: 11.25rem; /* 180px */
+        letter-spacing: -0.5rem; /* -8px */
     }
     
     .foot-btm {
-        bottom: 28px;
+        bottom: 1.75rem; /* 28px */
     }
 }
 
@@ -1431,7 +1430,7 @@ body.dark .project-card-link:hover .project-card {
     .abt-head,
     .abt-headbtm {
         font-size: clamp(2.5rem, 8vw, 4rem);
-        letter-spacing: -2px;
+        letter-spacing: -0.125rem; /* -2px */
     }
     
     .small-head {
@@ -1450,7 +1449,7 @@ body.dark .project-card-link:hover .project-card {
     
     .abt-label {
         font-size: 1rem;
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem; /* 12px */
     }
     
     .me-wrapper {
@@ -1475,7 +1474,7 @@ body.dark .project-card-link:hover .project-card {
     
     .connect {
         font-size: 1.4rem;
-        margin-top: 4px;
+        margin-top: 0.25rem; /* 4px */
     }
     
     .email-link {
@@ -1495,7 +1494,7 @@ body.dark .project-card-link:hover .project-card {
     .work-inner {
         width: 100%;
         max-width: 100%;
-        padding-inline: 16px;
+        padding-inline: 1rem; /* 16px */
     }
     
     .work-header {
@@ -1522,14 +1521,14 @@ body.dark .project-card-link:hover .project-card {
     .project-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 0.5rem; /* 8px */
     }
     
     .project {
         margin-bottom: 0;
-        padding: 6px 14px;
+        padding: 0.375rem 0.875rem; /* 6px 14px */
         background: rgba(0,0,0,0.05);
-        border-radius: 20px;
+        border-radius: 1.25rem; /* 20px */
         opacity: 0.5;
     }
     
@@ -1585,7 +1584,7 @@ body.dark .project-card-link:hover .project-card {
     /* Thumbnails at bottom */
     .thumbs {
         flex-direction: row;
-        gap: 8px;
+        gap: 0.5rem; /* 8px */
         justify-content: center;
         flex-wrap: wrap;
     }
@@ -1600,12 +1599,12 @@ body.dark .project-card-link:hover .project-card {
     
     /* LARAVEL */
     .laravel {
-        padding-top: 40px;
+        padding-top: 2.5rem; /* 40px */
     }
     
     .laravel-header {
         height: auto;
-        margin: 0 12px;
+        margin: 0 0.75rem; /* 12px */
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -1621,7 +1620,7 @@ body.dark .project-card-link:hover .project-card {
         position: static;
         align-self: flex-start;
         width: auto;
-        padding: 8px 16px;
+        padding: 0.5rem 1rem; /* 8px 16px */
     }
     
     .github-btn h1 {
@@ -1629,13 +1628,13 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .project-card {
-        min-height: 250px;
+        min-height: 15.625rem; /* 250px */
         margin: 0.75rem;
     }
     
     .project-card p {
         font-size: 0.9rem;
-        padding: 16px;
+        padding: 1rem; /* 16px */
     }
     
     /* CONTACT */
@@ -1663,18 +1662,18 @@ body.dark .project-card-link:hover .project-card {
     /* FOOTER */
     .footer {
         height: auto;
-        min-height: 250px;
-        padding: 16px 12px 12px 12px;
+        min-height: 15.625rem; /* 250px */
+        padding: 1rem 0.75rem 0.75rem 0.75rem; /* 16px 12px 12px 12px */
     }
     
     .foot-top {
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 0.5rem; /* 8px */
     }
     
     .foot-top p,
     .foot-top a {
-        font-size: 11px;
+        font-size: 0.6875rem; /* 11px */
     }
     
     .foot-top .logo {
@@ -1688,21 +1687,21 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .foot-name a {
-        font-size: 100px;
-        letter-spacing: -4px;
+        font-size: 6.25rem; /* 100px */
+        letter-spacing: -0.25rem; /* -4px */
     }
     
     .foot-btm {
-        bottom: 20px;
+        bottom: 1.25rem; /* 20px */
         left: 0.75rem;
     }
     
     .foot-btm p {
-        font-size: 11px;
+        font-size: 0.6875rem; /* 11px */
     }
     
     .foot-name {
-        bottom: 8px;
+        bottom: 0.5rem; /* 8px */
         right: 0.75rem;
     }
     
@@ -1769,8 +1768,8 @@ body.dark .project-card-link:hover .project-card {
     }
     
     .foot-name a {
-        font-size: 70px;
-        letter-spacing: -3px;
+        font-size: 4.375rem; /* 70px */
+        letter-spacing: -0.1875rem; /* -3px */
     }
     
     .page-fade-sequence__item {
