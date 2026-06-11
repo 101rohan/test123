@@ -16,6 +16,7 @@ const ScrollTrigger = window.ScrollTrigger;
 gsap.registerPlugin(ScrollTrigger);
 
 
+
 /* --------------------
    LENIS
 -------------------- */
@@ -34,29 +35,28 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0);
 
 /* --------------------
-   STACK COVER
+   STACK COVER — ALL PANELS (Fixed)
 -------------------- */
+
 
 const panels = gsap.utils.toArray(".panel");
 
-panels.forEach((panel, index) => {
+panels.forEach((panel, i) => {
+  if (i === panels.length - 1) return;
 
-    if (index === panels.length - 1) return;
-
-    gsap.to(panel, {
-        scale: 0.88,
-        y: -80,
-        borderRadius: "30px",
-        ease: "none",
-        scrollTrigger: {
-            trigger: panels[index + 1],
-            start: "top bottom",
-            end: "top top",
-            scrub: true
-        }
-    });
-
+  gsap.to(panel, {
+    scale: 0.92,
+    borderRadius: "24px",
+    ease: "none",
+    scrollTrigger: {
+      trigger: panels[i + 1],
+      start: "top bottom",
+      end: "top top",
+      scrub: true
+    }
+  });
 });
+
 /* ================================
    DOM REFERENCES
    ================================ */
@@ -138,8 +138,6 @@ function wrapForMask(el) {
     return inner;
 }
 
-
-
 (function initHero() {
     if (!heroTopEl || !heroNameEl) return;
 
@@ -171,18 +169,29 @@ function wrapForMask(el) {
 
         gsap.to(heroNameEl, {
             yPercent: 0,
-            duration: 1.4,
+            duration: 1.4, 
             ease: "expo.out",
-            delay: 2.8
+            delay: 2.8    
         });
     });
 
+    // FIX: Make both heroTop and heroName scroll at the SAME speed
     const heroTl = gsap.timeline({
-        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+        scrollTrigger: { 
+            trigger: ".hero", 
+            start: "top top", 
+            end: "bottom top", 
+            scrub: true 
+        }
     });
-    heroTl.to(heroTopEl, { y: -120, opacity: 0.2, ease: "none" });
+    
+    // Apply the SAME animation to both elements
+    heroTl.to([heroTopEl, heroNameEl], { 
+        y: -120, 
+        opacity: 1, 
+        ease: "none" 
+    });
 })();
-
 
 /* ================================================================
    3. ABOUT SECTION  —  Scroll reveals + draggable image + Pretext flow
@@ -570,60 +579,305 @@ window.addEventListener("scroll", () => {
 })();
 
 /* ================================================================
-   6. LARAVEL SECTION  —  Scroll-triggered entrance
+   6. LARAVEL SECTION  —  Panel-based stacking (no scroll animation)
    ================================================================ */
-
-
 (function initLaravel() {
     if (!laravelSection) return;
-
-    const tl = gsap.timeline({
-        scrollTrigger: { trigger: laravelSection, start: "top 80%" }
-    });
-
-    tl.from(".project-title", {
-        y: 80, opacity: 0, duration: 1.2, ease: "expo.out"
-    });
-
-    tl.from(".github-btn", {
-        y: 60, opacity: 0, duration: 1, ease: "expo.out"
-    }, "-=0.8");
-
-    tl.from(".section-line", {
-        scaleX: 0, opacity: 0, duration: 0.8, transformOrigin: "left center", ease: "power3.out"
-    }, "-=0.6");
-
-    tl.from(".project-card", {
-        y: 100, opacity: 0, duration: 1, ease: "power3.out"
-    }, "-=0.5");
+    
+    // Content is visible by default with panel stacking
+    // No entrance animation needed since panels stack naturally
+    
+    // Optional: Add subtle entrance when panel becomes active
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Panel is now active - any subtle animations can go here
+                // But content should already be visible from the panel stack
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    observer.observe(laravelSection);
 })();
 
 
 /* ================================================================
-   7. TOUCH / CONTACT SECTION  —  Scroll-triggered entrance
+   7. TOUCH / CONTACT SECTION  —  Panel-based stacking (no scroll animation)
    ================================================================ */
-
 (function initTouch() {
     if (!touchSection) return;
-
-    const tl = gsap.timeline({
-        scrollTrigger: { trigger: touchSection, start: "top 80%" }
-    });
-
-    const touchP  = touchSection.querySelector("p");
-    const touchA  = touchSection.querySelector("a");
-    const touchH1 = touchSection.querySelector("h1");
-
-    if (touchP)  tl.from(touchP,  { y: 60,  opacity: 0, duration: 1,   ease: "power3.out" });
-    if (touchA)  tl.from(touchA,  { y: 40,  opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.6");
-    if (touchH1) tl.from(touchH1, { y: 100, opacity: 0, duration: 1.2, ease: "expo.out"   }, "-=0.6");
+    
+    // Content is visible by default with panel stacking
+    // No entrance animation needed since panels stack naturally
+    
+    // Optional: Add subtle entrance when panel becomes active
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Panel is now active - any subtle animations can go here
+                // But content should already be visible from the panel stack
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    observer.observe(touchSection);
 })();
 
+// ============================================================
+// STACK COVER — ABOUT OVER HERO (Like fullPage.js cube effect)
+// Creates a seamless stacking where About section covers Hero
+// ============================================================
 
-document.getElementById("contactBtn").addEventListener("click", () => {
-    document.getElementById("touch").scrollIntoView({
-        behavior: "smooth"
+(function initSectionStacking() {
+    const heroSection = document.querySelector('.hero');
+    const aboutSection = document.querySelector('.about');
+    
+    if (!heroSection || !aboutSection) return;
+    
+    // Function to update backgrounds based on dark mode
+    function updateStackingBackgrounds() {
+        const isDark = document.body.classList.contains('dark');
+        
+        gsap.set('.hero', { 
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            backgroundColor: isDark ? '#171717' : '#F8F8F8'
+        });
+        
+        gsap.set('.about', { 
+            position: 'sticky',
+            top: 0,
+            zIndex: 2,
+            backgroundColor: isDark ? '#171717' : '#FFFFFF'
+        });
+    }
+    
+    // Initial setup
+    updateStackingBackgrounds();
+    
+    // Hero scales down as About approaches (cube-like transition)
+    gsap.to(heroSection, {
+        scale: 0.85,
+        borderRadius: '32px',
+        opacity: 0.3,
+        ease: 'power2.inOut',
+        scrollTrigger: {
+            trigger: aboutSection,
+            start: 'top bottom-=100',
+            end: 'top center',
+            scrub: 1.2,
+            id: 'hero-stack'
+        }
+    });
+    
+    function addStackShadow(currentSection, nextSection) {
+        if (!currentSection || !nextSection) return;
+        // Add shadow logic if needed
+    }
+    
+    addStackShadow(heroSection, aboutSection);
+    addStackShadow(aboutSection, workSection);
+    
+    // Smooth transition for content inside stacked sections
+    gsap.to('.heroTop, .heroName, .heroBottom', {
+        opacity: 0.5,
+        y: -20,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: aboutSection,
+            start: 'top bottom-=200',
+            end: 'top center',
+            scrub: true
+        }
+    });
+    
+    // Listen for dark mode changes
+    const darkModeObserver = new MutationObserver(() => {
+        updateStackingBackgrounds();
+        ScrollTrigger.refresh();
+    });
+    
+    darkModeObserver.observe(document.body, { 
+        attributes: true, 
+        attributeFilter: ['class'] 
+    });
+    
+    // Refresh ScrollTrigger on resize
+    window.addEventListener('resize', () => {
+        ScrollTrigger.refresh();
+    });
+})();
+
+// ============================================================
+// ENHANCED PANEL STACKING (fullPage.js style)
+// ============================================================
+
+const allPanels = gsap.utils.toArray(".panel");
+
+allPanels.forEach((panel, i) => {
+    if (i === allPanels.length - 1) return;
+    
+    const nextPanel = allPanels[i + 1];
+    
+    // Create main stacking animation
+    gsap.to(panel, {
+        scale: 0.88,
+        borderRadius: "28px",
+        ease: "power2.inOut",
+        scrollTrigger: {
+            trigger: nextPanel,
+            start: "top bottom-=50",
+            end: "top top+=100",
+            scrub: 1,
+            invalidateOnRefresh: true
+        }
+    });
+    
+
+    
+    // Fade out previous panel slightly
+    gsap.to(panel, {
+        opacity: 0.85,
+        ease: "none",
+        scrollTrigger: {
+            trigger: nextPanel,
+            start: "top bottom-=50",
+            end: "top center",
+            scrub: true
+        }
     });
 });
 
+// ============================================================
+// SMOOTH SNAP SCROLLING (Like fullPage.js)
+// ============================================================
 
+(function initSnapScrolling() {
+    const sections = document.querySelectorAll('.panel');
+    let isScrolling = false;
+    let scrollTimeout;
+    let targetSection = null;
+    
+    const snapToSection = () => {
+        if (isScrolling) return;
+        
+        let currentSection = null;
+        let minDistance = Infinity;
+        const viewportCenter = window.innerHeight / 2;
+        
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const distance = Math.abs(rect.top);
+            
+            // Find the section closest to the top of viewport
+            if (distance < minDistance && rect.top < viewportCenter) {
+                minDistance = distance;
+                currentSection = section;
+            }
+        });
+        
+        if (currentSection && currentSection !== targetSection) {
+            targetSection = currentSection;
+            isScrolling = true;
+            
+            // Smooth scroll with custom easing
+            const targetY = currentSection.offsetTop;
+            const currentY = window.scrollY;
+            const distance = targetY - currentY;
+            const duration = Math.min(Math.max(Math.abs(distance) * 0.5, 600), 1000);
+            
+            // Use GSAP for ultra-smooth scrolling
+            gsap.to(window, {
+                scrollTo: {
+                    y: targetY,
+                    autoKill: false
+                },
+                duration: duration / 1000,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    setTimeout(() => {
+                        isScrolling = false;
+                        targetSection = null;
+                    }, 100);
+                }
+            });
+        }
+    };
+    
+    // Debounced wheel event with better timing
+    let wheelTimeout;
+    let lastWheelTime = 0;
+    const wheelDelay = 700; // ms between snap triggers
+    
+    window.addEventListener('wheel', (e) => {
+        const now = Date.now();
+        if (now - lastWheelTime < wheelDelay) return;
+        
+        if (wheelTimeout) clearTimeout(wheelTimeout);
+        
+        wheelTimeout = setTimeout(() => {
+            snapToSection();
+            lastWheelTime = now;
+            wheelTimeout = null;
+        }, 80);
+    }, { passive: false });
+    
+    // Also snap on scroll end for touch devices
+    let scrollTimer;
+    window.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            if (!isScrolling) {
+                snapToSection();
+            }
+        }, 150);
+    });
+    
+    // Update active navigation
+    const updateActiveNav = () => {
+        let activeIndex = 0;
+        let minDistance = Infinity;
+        
+        sections.forEach((section, idx) => {
+            const rect = section.getBoundingClientRect();
+            const distance = Math.abs(rect.top);
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                activeIndex = idx;
+            }
+        });
+        
+        document.querySelectorAll('.dropdownMenu a').forEach((link, idx) => {
+            if (idx === activeIndex) {
+                link.style.opacity = '0.6';
+            } else {
+                link.style.opacity = '';
+            }
+        });
+    };
+    
+    window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateActiveNav);
+    });
+})();
+
+// ============================================================
+// FIX DARK MODE BACKGROUNDS FOR STACKING
+// ============================================================
+
+const styleObserver = new MutationObserver(() => {
+    const isDark = document.body.classList.contains('dark');
+    
+    gsap.set('.hero', { 
+        backgroundColor: isDark ? '#171717' : '#F8F8F8' 
+    });
+    gsap.set('.about', { 
+        backgroundColor: isDark ? '#171717' : '#FFFFFF' 
+    });
+    
+    ScrollTrigger.refresh();
+});
+
+styleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
