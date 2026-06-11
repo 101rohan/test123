@@ -428,7 +428,7 @@ body.dark .about {
 }
 
 .abt-body {
-    margin-top: 5rem;
+    margin-top: 4rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -448,8 +448,8 @@ body.dark .abt-label { color: #7A7A7A; }
 
 .abt-text p,
 .abt-canvas {
-    font-size: 1.15rem;
-    line-height: 1.32;
+    font-size: 1rem;
+    line-height: 1.1;
     color: #2A2A2A;
     margin-bottom: 1.375rem; /* 22px */
     display: block;
