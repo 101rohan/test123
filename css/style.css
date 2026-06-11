@@ -18,6 +18,15 @@ body.dark {
     background: #171717;
 }
 
+
+.panel {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    transform-origin: center top;
+}
+
 /* ================================
    NAVBAR
    ================================ */
@@ -506,6 +515,7 @@ body.dark .me { border: 0.0625rem solid rgba(248,248,248,0.30); } /* 1px */
     position: relative;
     background: #f8f8f8;
     transition: background 0.35s ease;
+    z-index: 3;
 }
 
 body.dark .work-section { background: #171717; }
@@ -704,6 +714,7 @@ body.dark .project a { color: #D4D4D4; }
 
 .laravel {
     position: relative;
+    z-index: 4;
     padding-top: 6.25rem; /* 100px */
 }
 
@@ -1797,3 +1808,4 @@ body.dark .project-card-link:hover .project-card {
     .page-fade-sequence__item:nth-child(5),
     .page-fade-sequence__item:nth-child(6) { display: none; }
 }
+

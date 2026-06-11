@@ -16,6 +16,47 @@ const ScrollTrigger = window.ScrollTrigger;
 gsap.registerPlugin(ScrollTrigger);
 
 
+/* --------------------
+   LENIS
+-------------------- */
+
+const lenis = new Lenis({
+    duration: 1.2,
+    smoothWheel: true
+});
+
+lenis.on("scroll", ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+/* --------------------
+   STACK COVER
+-------------------- */
+
+const panels = gsap.utils.toArray(".panel");
+
+panels.forEach((panel, index) => {
+
+    if (index === panels.length - 1) return;
+
+    gsap.to(panel, {
+        scale: 0.88,
+        y: -80,
+        borderRadius: "30px",
+        ease: "none",
+        scrollTrigger: {
+            trigger: panels[index + 1],
+            start: "top bottom",
+            end: "top top",
+            scrub: true
+        }
+    });
+
+});
 /* ================================
    DOM REFERENCES
    ================================ */
