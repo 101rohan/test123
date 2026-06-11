@@ -36,7 +36,6 @@ const scrollText   = document.querySelector(".scrollText");
 
 const heroTopEl  = document.querySelector(".heroTop");
 const heroNameEl = document.querySelector(".heroName");
-const imgCircle  = document.querySelector(".imgCircle");
 
 const aboutSection = document.querySelector(".about");
 const meAnchor     = document.getElementById("meAnchor");
@@ -98,38 +97,50 @@ function wrapForMask(el) {
     return inner;
 }
 
+
+
 (function initHero() {
-    if (!heroTopEl || !heroNameEl || !imgCircle) return;
+    if (!heroTopEl || !heroNameEl) return;
+
+    // Hide immediately before fonts resolve — prevents flash
+    const heroH1s = Array.from(heroTopEl.querySelectorAll("h1"));
+    const heroP   = heroTopEl.querySelector("p");
+    const allEls  = heroP ? [...heroH1s, heroP] : heroH1s;
+
+    gsap.set(allEls, { yPercent: 110 });
+    gsap.set(heroNameEl, { yPercent: 110 });
 
     document.fonts.ready.then(() => {
-        const heroLines  = heroTopEl.querySelectorAll("h1, p");
-        const heroInners = Array.from(heroLines).map(wrapForMask);
+        gsap.to(heroH1s, {
+            yPercent: 0,
+            duration: 1.2,
+            ease: "expo.out",
+            stagger: 0.12,
+            delay: 2.5
+        });
 
-        gsap.fromTo(heroInners,
-            { yPercent: 110 },
-            { yPercent: 0, duration: 1.1, ease: "expo.out", stagger: 0.1, delay: 2.5 }
-        );
+        if (heroP) {
+            gsap.to(heroP, {
+                yPercent: 0,
+                duration: 1,
+                ease: "expo.out",
+                delay: 2.75
+            });
+        }
 
-        const heroNameInner = wrapForMask(heroNameEl);
-        gsap.fromTo(heroNameInner,
-            { yPercent: 110 },
-            { yPercent: 0, duration: 1.4, ease: "expo.out", delay: 2.8 }
-        );
-
-        gsap.fromTo(imgCircle,
-            { y: 200, opacity: 0 },
-            { y: 0, opacity: 1, duration: 1.5, ease: "expo.out", delay: 2.5 }
-        );
+        gsap.to(heroNameEl, {
+            yPercent: 0,
+            duration: 1.4,
+            ease: "expo.out",
+            delay: 2.8
+        });
     });
 
     const heroTl = gsap.timeline({
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
     });
     heroTl.to(heroTopEl, { y: -120, opacity: 0.2, ease: "none" });
-    heroTl.to(imgCircle, { y: -200, scale: 0.8, opacity: 0, ease: "none" }, 0);
 })();
-
-
 
 
 /* ================================================================

@@ -278,30 +278,46 @@ body.dark .contactBtn { background: #2A2A2A; }
 
 .hero {
     min-height: 103vh;
-    padding: 12rem 1.5rem 2rem 1.5rem;
+    padding: 2rem 1.5rem 2rem 1.5rem; 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     position: relative;
     z-index: 1;
     overflow: hidden;
 }
 
+.heroTop h1,
+.heroTop p {
+    display: block;
+}
+
+.heroTop {
+    margin-bottom: 1.25rem;
+    text-align: right;      
+    flex-shrink: 0;
+}
+
+
 .heroTop h1 {
-    font-family: "Instrument Serif";
+    font-family: "Inter";
     font-size: 2.2rem;
-    font-weight: 400;
+    font-weight: 600;
     color: #171717;
-    line-height: 1;
-    overflow: hidden;
+    line-height: 1.1;
+    overflow: hidden;     
+    height: 1.1em;            
 }
 
 .heroTop p {
-    margin-top: 0.4rem;
+    margin-top: 1.5rem;
     font-size: 1rem;
     color: #777777;
-    overflow: hidden;
+    overflow: hidden;      
+    height: 1.2em;           
+    line-height: 1.2;
 }
+
 
 body.dark .heroTop h1 { color: #F8F8F8; }
 body.dark .heroTop p  { color: #B0B0B0; }
@@ -368,7 +384,7 @@ body.dark .heroName { color: #F8F8F8; }
 .about {
     min-height: 100vh;
     padding: 1.5rem;
-    background: #f8f8f8;
+    background: #fff;
     color: #171717;
     position: relative;
     z-index: 2;
