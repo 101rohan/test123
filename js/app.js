@@ -162,7 +162,6 @@ const touchSection   = document.querySelector(".touch");
 (function initHero() {
     if (!heroTopEl || !heroNameEl) return;
 
-    // Hide immediately before fonts resolve — prevents flash
     const heroH1s = Array.from(heroTopEl.querySelectorAll("h1"));
     const heroP   = heroTopEl.querySelector("p");
     const allEls  = heroP ? [...heroH1s, heroP] : heroH1s;
@@ -199,19 +198,94 @@ const touchSection   = document.querySelector(".touch");
     // Skip parallax on mobile
     if (isMobile) return;
 
-    // Simplified parallax - single animation
-    gsap.to([heroTopEl, heroNameEl], { 
-        y: -80, // Reduced movement for smoother feel
-        opacity: 0.7,
+    // Clean single parallax - no opacity changes, no conflicts
+    gsap.to(heroTopEl, { 
+        y: -60,
         ease: "none",
         scrollTrigger: {
             trigger: ".hero",
             start: "top top",
             end: "bottom top",
-            scrub: true,
-            // Add this to prevent layout thrashing
-            fastScrollEnd: true
+            scrub: true
         }
+    });
+
+    gsap.to(heroNameEl, { 
+        y: -40,
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+        }
+    });
+})();
+
+// ... keep everything else the same until the stacking section ...
+
+// ============================================================
+// STACK COVER — ABOUT OVER HERO (Desktop Only)
+// REPLACE THE ENTIRE initSectionStacking FUNCTION
+// ============================================================
+
+(function initSectionStacking() {
+    const heroSection = document.querySelector('.hero');
+    const aboutSection = document.querySelector('.about');
+    
+    if (!heroSection || !aboutSection) return;
+    
+    function updateStackingBackgrounds() {
+        const isDark = document.body.classList.contains('dark');
+        
+        gsap.set('.hero', { 
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            backgroundColor: isDark ? '#171717' : '#F8F8F8'
+        });
+        
+        gsap.set('.about', { 
+            position: 'sticky',
+            top: 0,
+            zIndex: 2,
+            backgroundColor: isDark ? '#171717' : '#FFFFFF'
+        });
+    }
+    
+    updateStackingBackgrounds();
+    
+    // Skip hero scale animation on mobile
+    if (!isMobile) {
+        // ONLY scale - no opacity on content elements
+        gsap.to(heroSection, {
+            scale: 0.85,
+            borderRadius: '32px',
+            ease: 'none',
+            scrollTrigger: {
+                trigger: aboutSection,
+                start: 'top bottom-=50',
+                end: 'top top+=50',
+                scrub: true
+            }
+        });
+        
+        // REMOVED the conflicting opacity/y animation on heroTop, heroName, heroBottom
+        // The hero parallax above already handles movement
+    }
+    
+    const darkModeObserver = new MutationObserver(() => {
+        updateStackingBackgrounds();
+        ScrollTrigger.refresh();
+    });
+    
+    darkModeObserver.observe(document.body, { 
+        attributes: true, 
+        attributeFilter: ['class'] 
+    });
+    
+    window.addEventListener('resize', () => {
+        ScrollTrigger.refresh();
     });
 })();
 

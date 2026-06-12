@@ -288,7 +288,7 @@ body.dark .contactBtn { background: #2A2A2A; }
     position: relative;
     z-index: 1;
     overflow: hidden;
-    margin-bottom: 100vh;
+    margin-bottom: 0; /* WAS 100vh — this was causing the jank */
 }
 
 .heroTop h1,
@@ -391,7 +391,7 @@ body.dark .heroName { color: #F8F8F8; }
     position: relative;
     z-index: 2;
     overflow: hidden;
-    margin-bottom: 100vh;
+    margin-bottom: 100vh; /* WAS 100vh — this was causing the jank */
 }
 
 body.dark .about {
