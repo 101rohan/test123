@@ -193,6 +193,26 @@ function wrapForMask(el) {
     });
 })();
 
+// Add this to your app.js, before or after the hero animation section
+
+// Disable parallax and snap scrolling on mobile
+if (window.innerWidth <= 767) {
+    // Remove hero parallax
+    const heroTl = gsap.timeline({
+        scrollTrigger: { 
+            trigger: ".hero", 
+            start: "top top", 
+            end: "bottom top", 
+            scrub: true 
+        }
+    });
+    heroTl.kill();
+    
+    // Disable snap scrolling
+    window.removeEventListener('wheel', snapToSection);
+    window.removeEventListener('scroll', updateActiveNav);
+}
+
 /* ================================================================
    3. ABOUT SECTION  —  Scroll reveals + draggable image + Pretext flow
    ================================================================ */
@@ -666,7 +686,7 @@ window.addEventListener("scroll", () => {
             trigger: aboutSection,
             start: 'top bottom-=100',
             end: 'top center',
-            scrub: 1.2,
+            scrub: 0.5,
             id: 'hero-stack'
         }
     });
@@ -808,7 +828,7 @@ allPanels.forEach((panel, i) => {
     // Debounced wheel event with better timing
     let wheelTimeout;
     let lastWheelTime = 0;
-    const wheelDelay = 700; // ms between snap triggers
+    const wheelDelay = 500; // ms between snap triggers
     
     window.addEventListener('wheel', (e) => {
         const now = Date.now();
