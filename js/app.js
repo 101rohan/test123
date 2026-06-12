@@ -15,7 +15,11 @@ const ScrollTrigger = window.ScrollTrigger;
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ================================
+   MOBILE DETECTION
+   ================================ */
 
+const isMobile = window.innerWidth <= 767;
 
 /* --------------------
    LENIS
@@ -35,15 +39,26 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0);
 
 /* --------------------
-   STACK COVER — ALL PANELS (Fixed)
+   STACK COVER — ALL PANELS (with Mobile Check)
 -------------------- */
-
 
 const panels = gsap.utils.toArray(".panel");
 
 panels.forEach((panel, i) => {
   if (i === panels.length - 1) return;
 
+  // Skip scale animation on mobile
+  if (isMobile) {
+    // On mobile, just ensure panels are stacked without scale
+    gsap.set(panel, { 
+      position: 'sticky',
+      top: 0,
+      zIndex: i + 1
+    });
+    return;
+  }
+
+  // Desktop: full stacking with scale
   gsap.to(panel, {
     scale: 0.92,
     borderRadius: "24px",
@@ -90,7 +105,6 @@ const thumbItems   = document.querySelectorAll(".thumb");
 
 const laravelSection = document.querySelector(".laravel");
 const touchSection   = document.querySelector(".touch");
-
 
 /* ================================================================
    1. PAGE LOAD SEQUENCE  —  Staircase wipe + text entrance
@@ -175,6 +189,9 @@ function wrapForMask(el) {
         });
     });
 
+    // Skip parallax on mobile
+    if (isMobile) return;
+
     // FIX: Make both heroTop and heroName scroll at the SAME speed
     const heroTl = gsap.timeline({
         scrollTrigger: { 
@@ -192,26 +209,6 @@ function wrapForMask(el) {
         ease: "none" 
     });
 })();
-
-// Add this to your app.js, before or after the hero animation section
-
-// Disable parallax and snap scrolling on mobile
-if (window.innerWidth <= 767) {
-    // Remove hero parallax
-    const heroTl = gsap.timeline({
-        scrollTrigger: { 
-            trigger: ".hero", 
-            start: "top top", 
-            end: "bottom top", 
-            scrub: true 
-        }
-    });
-    heroTl.kill();
-    
-    // Disable snap scrolling
-    window.removeEventListener('wheel', snapToSection);
-    window.removeEventListener('scroll', updateActiveNav);
-}
 
 /* ================================================================
    3. ABOUT SECTION  —  Scroll reveals + draggable image + Pretext flow
@@ -234,6 +231,9 @@ if (window.innerWidth <= 767) {
        PRETEXT — dynamic text reflow around the draggable photo
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
+    // Skip Pretext on mobile since image is hidden
+    if (isMobile) return;
+
     const PARA1 = "I'm an aspiring UI/UX designer and Laravel developer focused on creating products that are both intuitive and technically solid. I enjoy translating user needs into clean interfaces and then bringing them to life with scalable backend systems.";
     const PARA2 = "From wireframes to working applications, I like building solutions where design and development support each other instead of competing.";
 
@@ -255,8 +255,7 @@ if (window.innerWidth <= 767) {
     let LINE_HEIGHT = 24;
     const PARA_GAP  = 22;  /* matches original margin-bottom on <p> */
 
-    /* Container geometry cached in section-relative coords.
-       cR.top - sR.top stays constant during scroll — no viewport dependency. */
+    /* Container geometry cached in section-relative coords */
     let contLeft = 0, contTop = 0, contRight = 0, contW = 0;
 
     function updateContainerGeometry() {
@@ -287,14 +286,13 @@ if (window.innerWidth <= 767) {
     function reflowText() {
         if (!preparedPara1 || !preparedPara2 || contW <= 0) return;
 
-        /* Image bounds in section-relative coords.
-           tx / ty come from the drag system and are already section-relative. */
+        /* Image bounds in section-relative coords */
         const imgL = tx;
         const imgT = ty;
         const imgR = tx + meImg.offsetWidth;
         const imgB = ty + meImg.offsetHeight;
 
-        /* Pre-check horizontal overlap — same for every line */
+        /* Pre-check horizontal overlap */
         const overH = imgL < contRight && imgR > contLeft;
 
         flowContainer.innerHTML = "";
@@ -304,7 +302,6 @@ if (window.innerWidth <= 767) {
             let y = startY;
 
             while (true) {
-                /* Convert container-local y to section coords for overlap test */
                 const lineT = contTop + y;
                 const lineB = lineT + LINE_HEIGHT;
                 const overV = lineT < imgB && lineB > imgT;
@@ -312,15 +309,12 @@ if (window.innerWidth <= 767) {
                 let lineX = 0, lineW = contW;
 
                 if (overH && overV) {
-                    /* Image position relative to this container's left edge */
                     const iL = imgL - contLeft;
                     const iR = imgR - contLeft;
 
                     if ((iL + iR) / 2 > contW / 2) {
-                        /* Image on the right half → shrink line, text flows left */
                         lineW = Math.max(50, iL - 10);
                     } else {
-                        /* Image on the left half → offset line, text flows right */
                         lineX = Math.max(0, iR + 10);
                         lineW = Math.max(50, contW - lineX);
                     }
@@ -398,7 +392,7 @@ if (window.innerWidth <= 767) {
         tx = clamp(startTx + cx - startCx, 0, maxX);
         ty = clamp(startTy + cy - startCy, 0, maxY);
         meImg.style.transform = `translate(${tx}px, ${ty}px)`;
-        scheduleReflow();   /* throttled to one reflow per animation frame */
+        scheduleReflow();
     }
 
     function onDragEnd() {
@@ -533,6 +527,16 @@ window.addEventListener("scroll", () => {
         thumbItems.forEach((t, i)   => t.classList.toggle("active", i === index));
     }
 
+    // On mobile, use click-based navigation instead of scroll
+    if (isMobile) {
+        projectItems.forEach((p, i) => {
+            p.addEventListener("click", () => renderWork(i));
+        });
+        renderWork(0);
+        return;
+    }
+
+    // Desktop: scroll-driven
     function updateWorkOnScroll() {
         const rect       = workSection.getBoundingClientRect();
         const sectionH   = workSpacer.offsetHeight;
@@ -571,48 +575,37 @@ window.addEventListener("scroll", () => {
 
   const revealElements = workHeaderMask.querySelectorAll('.reveal');
   
-  // Create an Intersection Observer
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Add 'revealed' class when the header comes into view
         revealElements.forEach(el => {
           el.classList.add('revealed');
         });
-        
-        // Stop observing after animation triggers
         observer.unobserve(entry.target);
       }
     });
   }, {
-    threshold: 0.2, // Trigger when 20% of the element is visible
-    rootMargin: '0px 0px -50px 0px' // Slight offset for better timing
+    threshold: 0.2,
+    rootMargin: '0px 0px -50px 0px'
   });
 
-  // Start observing the header mask
   observer.observe(workHeaderMask);
   
-  // Reset classes on page load (in case of hot reload)
   revealElements.forEach(el => {
     el.classList.remove('revealed');
   });
 })();
 
 /* ================================================================
-   6. LARAVEL SECTION  —  Panel-based stacking (no scroll animation)
+   6. LARAVEL SECTION  —  Panel-based stacking
    ================================================================ */
 (function initLaravel() {
     if (!laravelSection) return;
     
-    // Content is visible by default with panel stacking
-    // No entrance animation needed since panels stack naturally
-    
-    // Optional: Add subtle entrance when panel becomes active
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Panel is now active - any subtle animations can go here
-                // But content should already be visible from the panel stack
+                // Panel is now active
             }
         });
     }, { threshold: 0.5 });
@@ -622,20 +615,15 @@ window.addEventListener("scroll", () => {
 
 
 /* ================================================================
-   7. TOUCH / CONTACT SECTION  —  Panel-based stacking (no scroll animation)
+   7. TOUCH / CONTACT SECTION  —  Panel-based stacking
    ================================================================ */
 (function initTouch() {
     if (!touchSection) return;
     
-    // Content is visible by default with panel stacking
-    // No entrance animation needed since panels stack naturally
-    
-    // Optional: Add subtle entrance when panel becomes active
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Panel is now active - any subtle animations can go here
-                // But content should already be visible from the panel stack
+                // Panel is now active
             }
         });
     }, { threshold: 0.5 });
@@ -644,8 +632,7 @@ window.addEventListener("scroll", () => {
 })();
 
 // ============================================================
-// STACK COVER — ABOUT OVER HERO (Like fullPage.js cube effect)
-// Creates a seamless stacking where About section covers Hero
+// STACK COVER — ABOUT OVER HERO (Desktop Only)
 // ============================================================
 
 (function initSectionStacking() {
@@ -654,7 +641,6 @@ window.addEventListener("scroll", () => {
     
     if (!heroSection || !aboutSection) return;
     
-    // Function to update backgrounds based on dark mode
     function updateStackingBackgrounds() {
         const isDark = document.body.classList.contains('dark');
         
@@ -673,46 +659,37 @@ window.addEventListener("scroll", () => {
         });
     }
     
-    // Initial setup
     updateStackingBackgrounds();
     
-    // Hero scales down as About approaches (cube-like transition)
-    gsap.to(heroSection, {
-        scale: 0.85,
-        borderRadius: '32px',
-        opacity: 0.3,
-        ease: 'power2.inOut',
-        scrollTrigger: {
-            trigger: aboutSection,
-            start: 'top bottom-=100',
-            end: 'top center',
-            scrub: 0.5,
-            id: 'hero-stack'
-        }
-    });
-    
-    function addStackShadow(currentSection, nextSection) {
-        if (!currentSection || !nextSection) return;
-        // Add shadow logic if needed
+    // Skip hero scale animation on mobile
+    if (!isMobile) {
+        gsap.to(heroSection, {
+            scale: 0.85,
+            borderRadius: '32px',
+            opacity: 0.3,
+            ease: 'power2.inOut',
+            scrollTrigger: {
+                trigger: aboutSection,
+                start: 'top bottom-=100',
+                end: 'top center',
+                scrub: 0.5,
+                id: 'hero-stack'
+            }
+        });
+        
+        gsap.to('.heroTop, .heroName, .heroBottom', {
+            opacity: 0.5,
+            y: -20,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: aboutSection,
+                start: 'top bottom-=200',
+                end: 'top center',
+                scrub: true
+            }
+        });
     }
     
-    addStackShadow(heroSection, aboutSection);
-    addStackShadow(aboutSection, workSection);
-    
-    // Smooth transition for content inside stacked sections
-    gsap.to('.heroTop, .heroName, .heroBottom', {
-        opacity: 0.5,
-        y: -20,
-        ease: 'none',
-        scrollTrigger: {
-            trigger: aboutSection,
-            start: 'top bottom-=200',
-            end: 'top center',
-            scrub: true
-        }
-    });
-    
-    // Listen for dark mode changes
     const darkModeObserver = new MutationObserver(() => {
         updateStackingBackgrounds();
         ScrollTrigger.refresh();
@@ -723,14 +700,13 @@ window.addEventListener("scroll", () => {
         attributeFilter: ['class'] 
     });
     
-    // Refresh ScrollTrigger on resize
     window.addEventListener('resize', () => {
         ScrollTrigger.refresh();
     });
 })();
 
 // ============================================================
-// ENHANCED PANEL STACKING (fullPage.js style)
+// ENHANCED PANEL STACKING (Desktop Only)
 // ============================================================
 
 const allPanels = gsap.utils.toArray(".panel");
@@ -740,7 +716,9 @@ allPanels.forEach((panel, i) => {
     
     const nextPanel = allPanels[i + 1];
     
-    // Create main stacking animation
+    // Skip stacking animations on mobile
+    if (isMobile) return;
+    
     gsap.to(panel, {
         scale: 0.88,
         borderRadius: "28px",
@@ -754,9 +732,6 @@ allPanels.forEach((panel, i) => {
         }
     });
     
-
-    
-    // Fade out previous panel slightly
     gsap.to(panel, {
         opacity: 0.85,
         ease: "none",
@@ -770,13 +745,14 @@ allPanels.forEach((panel, i) => {
 });
 
 // ============================================================
-// SMOOTH SNAP SCROLLING (Like fullPage.js)
+// SNAP SCROLLING (Desktop Only)
 // ============================================================
 
 (function initSnapScrolling() {
+    if (isMobile) return;
+    
     const sections = document.querySelectorAll('.panel');
     let isScrolling = false;
-    let scrollTimeout;
     let targetSection = null;
     
     const snapToSection = () => {
@@ -790,7 +766,6 @@ allPanels.forEach((panel, i) => {
             const rect = section.getBoundingClientRect();
             const distance = Math.abs(rect.top);
             
-            // Find the section closest to the top of viewport
             if (distance < minDistance && rect.top < viewportCenter) {
                 minDistance = distance;
                 currentSection = section;
@@ -801,13 +776,11 @@ allPanels.forEach((panel, i) => {
             targetSection = currentSection;
             isScrolling = true;
             
-            // Smooth scroll with custom easing
             const targetY = currentSection.offsetTop;
             const currentY = window.scrollY;
             const distance = targetY - currentY;
             const duration = Math.min(Math.max(Math.abs(distance) * 0.5, 600), 1000);
             
-            // Use GSAP for ultra-smooth scrolling
             gsap.to(window, {
                 scrollTo: {
                     y: targetY,
@@ -825,10 +798,9 @@ allPanels.forEach((panel, i) => {
         }
     };
     
-    // Debounced wheel event with better timing
     let wheelTimeout;
     let lastWheelTime = 0;
-    const wheelDelay = 500; // ms between snap triggers
+    const wheelDelay = 500;
     
     window.addEventListener('wheel', (e) => {
         const now = Date.now();
@@ -843,7 +815,6 @@ allPanels.forEach((panel, i) => {
         }, 80);
     }, { passive: false });
     
-    // Also snap on scroll end for touch devices
     let scrollTimer;
     window.addEventListener('scroll', () => {
         clearTimeout(scrollTimer);
@@ -852,34 +823,6 @@ allPanels.forEach((panel, i) => {
                 snapToSection();
             }
         }, 150);
-    });
-    
-    // Update active navigation
-    const updateActiveNav = () => {
-        let activeIndex = 0;
-        let minDistance = Infinity;
-        
-        sections.forEach((section, idx) => {
-            const rect = section.getBoundingClientRect();
-            const distance = Math.abs(rect.top);
-            
-            if (distance < minDistance) {
-                minDistance = distance;
-                activeIndex = idx;
-            }
-        });
-        
-        document.querySelectorAll('.dropdownMenu a').forEach((link, idx) => {
-            if (idx === activeIndex) {
-                link.style.opacity = '0.6';
-            } else {
-                link.style.opacity = '';
-            }
-        });
-    };
-    
-    window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateActiveNav);
     });
 })();
 
@@ -901,3 +844,34 @@ const styleObserver = new MutationObserver(() => {
 });
 
 styleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+// ============================================================
+// CONTACT BUTTON - Scroll to Contact Section
+// ============================================================
+
+const contactBtn = document.getElementById('contactBtn');
+if (contactBtn) {
+    contactBtn.addEventListener('click', () => {
+        const touchSection = document.getElementById('touch');
+        if (touchSection) {
+            touchSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+// ============================================================
+// HANDLE RESIZE - Update mobile state
+// ============================================================
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        // Reload the page on breakpoint crossing to reset all states
+        const wasMobile = isMobile;
+        const nowMobile = window.innerWidth <= 767;
+        if (wasMobile !== nowMobile) {
+            location.reload();
+        }
+    }, 250);
+});
