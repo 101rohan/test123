@@ -1425,9 +1425,16 @@ body.dark .project-card-link:hover .project-card {
         bottom: 1.75rem;
     }
 }
-
 /* Mobile (320px - 767px) */
 @media screen and (max-width: 767px) {
+    
+    /* Override panel behavior on mobile */
+    .panel {
+        position: relative;
+        height: auto;
+        min-height: auto;
+        overflow: visible;
+    }
     
     /* NAVBAR */
     .navbarLight {
@@ -1474,11 +1481,13 @@ body.dark .project-card-link:hover .project-card {
         font-size: 1rem;
     }
     
-    /* HERO - Remove parallax scroll animation */
+    /* HERO - Normal scrolling */
     .hero {
         min-height: 80vh;
         padding: 8rem 1rem 1.5rem 1rem;
         margin-bottom: 0;
+        position: relative;
+        height: auto;
     }
     
     .heroTop h1 {
@@ -1507,11 +1516,13 @@ body.dark .project-card-link:hover .project-card {
         align-self: flex-end;
     }
     
-    /* ABOUT - Show only About Me section */
+    /* ABOUT - Normal scrolling */
     .about {
         min-height: auto;
         padding: 1rem;
         margin-bottom: 0;
+        position: relative;
+        height: auto;
     }
     
     .abt-head,
@@ -1568,11 +1579,12 @@ body.dark .project-card-link:hover .project-card {
         font-size: 0.9rem;
     }
     
-    /* WORK SECTION - STACKED LAYOUT (NO STICKY/PANEL STACKING) */
+    /* WORK SECTION - Normal scrolling */
     .work-section {
         position: relative;
         z-index: 3;
         background: #f8f8f8;
+        padding-bottom: 2rem;
     }
 
     body.dark .work-section { 
@@ -1681,7 +1693,7 @@ body.dark .project-card-link:hover .project-card {
         white-space: nowrap;
     }
 
-    /* Stack container - same stacking behavior as desktop */
+    /* Stack container */
     .stack-container {
         width: 100%;
         min-width: 0;
@@ -1773,6 +1785,9 @@ body.dark .project-card-link:hover .project-card {
     /* LARAVEL */
     .laravel {
         padding-top: 2.5rem;
+        padding-bottom: 2rem;
+        position: relative;
+        z-index: 4;
     }
     
     .laravel-header {
@@ -1813,8 +1828,9 @@ body.dark .project-card-link:hover .project-card {
     /* CONTACT */
     .touch {
         min-height: 20rem;
+        height: auto;
         gap: 1rem;
-        padding: 1.5rem 1rem 0 1rem;
+        padding: 2rem 1rem;
     }
     
     .touch p {
@@ -1837,6 +1853,8 @@ body.dark .project-card-link:hover .project-card {
         height: auto;
         min-height: 15.625rem;
         padding: 1rem 0.75rem 0.75rem 0.75rem;
+        position: relative;
+        z-index: 5;
     }
     
     .foot-top {
