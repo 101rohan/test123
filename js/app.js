@@ -15,6 +15,11 @@ const ScrollTrigger = window.ScrollTrigger;
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* Prevents GSAP's internal "catch up" jump after long tasks /
+   tab switches — this is the #1 cause of janky scrub animations
+   when paired with Lenis. */
+gsap.ticker.lagSmoothing(0);
+
 /* ================================
    MOBILE DETECTION
    ================================ */
@@ -27,15 +32,13 @@ const isMobile = window.innerWidth <= 767;
 
 const lenis = new Lenis({
     duration: 1.2,
-    smoothWheel: true,
-    // Add these for better performance
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     direction: 'vertical',
     gestureDirection: 'vertical',
-    smooth: true,
-    mouseMultiplier: 1,
-    smoothTouch: false,
+    smoothWheel: true,
+    wheelMultiplier: 1,
     touchMultiplier: 2,
+    syncTouch: false,
     infinite: false,
 });
 
@@ -55,40 +58,6 @@ lenis.on('scroll', () => {
         ScrollTrigger.update();
         scrollTimeout = null;
     });
-});
-
-/* --------------------
-   STACK COVER — ALL PANELS (with Mobile Check)
--------------------- */
-
-const panels = gsap.utils.toArray(".panel");
-
-panels.forEach((panel, i) => {
-  if (i === panels.length - 1) return;
-
-  // Skip scale animation on mobile
-  if (isMobile) {
-    // On mobile, just ensure panels are stacked without scale
-    gsap.set(panel, { 
-      position: 'sticky',
-      top: 0,
-      zIndex: i + 1
-    });
-    return;
-  }
-
-  // Desktop: full stacking with scale
-  gsap.to(panel, {
-    scale: 0.92,
-    borderRadius: "24px",
-    ease: "none",
-    scrollTrigger: {
-      trigger: panels[i + 1],
-      start: "top bottom",
-      end: "top top",
-      scrub: true
-    }
-  });
 });
 
 /* ================================
@@ -154,7 +123,6 @@ const touchSection   = document.querySelector(".touch");
     tl.to(loaderTexts, { opacity: 0, duration: 0.3, ease: "power2.in" }, "<+=0.3");
 })();
 
-
 /* ================================================================
    2. HERO ANIMATION  —  Mask-reveal on load + scroll parallax
    ================================================================ */
@@ -189,9 +157,9 @@ const touchSection   = document.querySelector(".touch");
 
         gsap.to(heroNameEl, {
             yPercent: 0,
-            duration: 1.4, 
+            duration: 1.4,
             ease: "expo.out",
-            delay: 2.8    
+            delay: 2.8
         });
     });
 
@@ -199,7 +167,7 @@ const touchSection   = document.querySelector(".touch");
     if (isMobile) return;
 
     // Clean single parallax - no opacity changes, no conflicts
-    gsap.to(heroTopEl, { 
+    gsap.to(heroTopEl, {
         y: -60,
         ease: "none",
         scrollTrigger: {
@@ -210,7 +178,7 @@ const touchSection   = document.querySelector(".touch");
         }
     });
 
-    gsap.to(heroNameEl, { 
+    gsap.to(heroNameEl, {
         y: -40,
         ease: "none",
         scrollTrigger: {
@@ -222,68 +190,64 @@ const touchSection   = document.querySelector(".touch");
     });
 })();
 
-// ... keep everything else the same until the stacking section ...
-
-// ============================================================
-// STACK COVER — ABOUT OVER HERO (Desktop Only)
-// REPLACE THE ENTIRE initSectionStacking FUNCTION
-// ============================================================
+/* ================================================================
+   2.5 STACK COVER — ABOUT OVER HERO (Desktop Only)
+   ----------------------------------------------------------------
+   Single source of truth for the hero -> about transition.
+   Everything is driven by ONE scrub:true / ease:"none" tween so it
+   tracks the scrollbar 1:1 — no fighting timelines, no lag.
+   ================================================================ */
 
 (function initSectionStacking() {
     const heroSection = document.querySelector('.hero');
-    const aboutSection = document.querySelector('.about');
-    
     if (!heroSection || !aboutSection) return;
-    
+
     function updateStackingBackgrounds() {
         const isDark = document.body.classList.contains('dark');
-        
-        gsap.set('.hero', { 
+
+        gsap.set(heroSection, {
             position: 'sticky',
             top: 0,
             zIndex: 1,
             backgroundColor: isDark ? '#171717' : '#F8F8F8'
         });
-        
-        gsap.set('.about', { 
+
+        gsap.set(aboutSection, {
             position: 'sticky',
             top: 0,
             zIndex: 2,
             backgroundColor: isDark ? '#171717' : '#FFFFFF'
         });
     }
-    
+
     updateStackingBackgrounds();
-    
-    // Skip hero scale animation on mobile
+
     if (!isMobile) {
-        // ONLY scale - no opacity on content elements
+        gsap.set(heroSection, { willChange: 'transform' });
+
         gsap.to(heroSection, {
-            scale: 0.85,
+            scale: 0.9,
             borderRadius: '32px',
             ease: 'none',
             scrollTrigger: {
                 trigger: aboutSection,
-                start: 'top bottom-=50',
-                end: 'top top+=50',
-                scrub: true
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true,
+                invalidateOnRefresh: true
             }
         });
-        
-        // REMOVED the conflicting opacity/y animation on heroTop, heroName, heroBottom
-        // The hero parallax above already handles movement
     }
-    
+
     const darkModeObserver = new MutationObserver(() => {
         updateStackingBackgrounds();
-        ScrollTrigger.refresh();
     });
-    
-    darkModeObserver.observe(document.body, { 
-        attributes: true, 
-        attributeFilter: ['class'] 
+
+    darkModeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class']
     });
-    
+
     window.addEventListener('resize', () => {
         ScrollTrigger.refresh();
     });
@@ -305,7 +269,7 @@ const touchSection   = document.querySelector(".touch");
     abtTl.from(".abt-text",    { y: 80, opacity: 0, stagger: 0.2, duration: 1, ease: "power3.out" }, "-=0.8");
 
 
-    
+
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        PRETEXT — dynamic text reflow around the draggable photo
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -550,8 +514,8 @@ document.querySelectorAll(".dropdownMenu a[href^='#']").forEach((link) => {
     link.addEventListener("click", (e) => {
         const id     = link.getAttribute("href").slice(1);
         const target = document.getElementById(id);
-        if (target) { 
-            e.preventDefault(); 
+        if (target) {
+            e.preventDefault();
             // Use Lenis scrollTo instead of native
             lenis.scrollTo(target, { offset: 0, duration: 1.5 });
         }
@@ -668,7 +632,7 @@ window.addEventListener("scroll", () => {
   if (!workHeaderMask) return;
 
   const revealElements = workHeaderMask.querySelectorAll('.reveal');
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -684,7 +648,7 @@ window.addEventListener("scroll", () => {
   });
 
   observer.observe(workHeaderMask);
-  
+
   revealElements.forEach(el => {
     el.classList.remove('revealed');
   });
@@ -695,7 +659,7 @@ window.addEventListener("scroll", () => {
    ================================================================ */
 (function initLaravel() {
     if (!laravelSection) return;
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -703,7 +667,7 @@ window.addEventListener("scroll", () => {
             }
         });
     }, { threshold: 0.5 });
-    
+
     observer.observe(laravelSection);
 })();
 
@@ -713,7 +677,7 @@ window.addEventListener("scroll", () => {
    ================================================================ */
 (function initTouch() {
     if (!touchSection) return;
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -721,139 +685,9 @@ window.addEventListener("scroll", () => {
             }
         });
     }, { threshold: 0.5 });
-    
+
     observer.observe(touchSection);
 })();
-
-// ============================================================
-// STACK COVER — ABOUT OVER HERO (Desktop Only)
-// ============================================================
-
-(function initSectionStacking() {
-    const heroSection = document.querySelector('.hero');
-    const aboutSection = document.querySelector('.about');
-    
-    if (!heroSection || !aboutSection) return;
-    
-    function updateStackingBackgrounds() {
-        const isDark = document.body.classList.contains('dark');
-        
-        gsap.set('.hero', { 
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            backgroundColor: isDark ? '#171717' : '#F8F8F8'
-        });
-        
-        gsap.set('.about', { 
-            position: 'sticky',
-            top: 0,
-            zIndex: 2,
-            backgroundColor: isDark ? '#171717' : '#FFFFFF'
-        });
-    }
-    
-    updateStackingBackgrounds();
-    
-    // Skip hero scale animation on mobile
-    if (!isMobile) {
-        gsap.to(heroSection, {
-            scale: 0.85,
-            borderRadius: '32px',
-            opacity: 0.3,
-            ease: 'power2.inOut',
-            scrollTrigger: {
-                trigger: aboutSection,
-                start: 'top bottom-=100',
-                end: 'top center',
-                scrub: 0.5,
-                id: 'hero-stack'
-            }
-        });
-        
-        gsap.to('.heroTop, .heroName, .heroBottom', {
-            opacity: 0.5,
-            y: -20,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: aboutSection,
-                start: 'top bottom-=200',
-                end: 'top center',
-                scrub: true
-            }
-        });
-    }
-    
-    const darkModeObserver = new MutationObserver(() => {
-        updateStackingBackgrounds();
-        ScrollTrigger.refresh();
-    });
-    
-    darkModeObserver.observe(document.body, { 
-        attributes: true, 
-        attributeFilter: ['class'] 
-    });
-    
-    window.addEventListener('resize', () => {
-        ScrollTrigger.refresh();
-    });
-})();
-
-// ============================================================
-// ENHANCED PANEL STACKING (Desktop Only) - SIMPLIFIED
-// ============================================================
-
-const allPanels = gsap.utils.toArray(".panel");
-
-allPanels.forEach((panel, i) => {
-    if (i === allPanels.length - 1) return;
-    
-    const nextPanel = allPanels[i + 1];
-    
-    // Skip stacking animations on mobile
-    if (isMobile) return;
-    
-    // Single combined animation instead of two separate ones
-    gsap.to(panel, {
-        scale: 0.88,
-        borderRadius: "28px",
-        opacity: 0.85,
-        ease: "none",
-        scrollTrigger: {
-            trigger: nextPanel,
-            start: "top bottom-=50",
-            end: "top center",
-            scrub: 1,
-            invalidateOnRefresh: true
-        }
-    });
-});
-
-// ============================================================
-// REMOVE SNAP SCROLLING - It conflicts with smooth scrolling
-// ============================================================
-
-// The snap scrolling section has been removed entirely
-// Lenis handles smooth scrolling naturally
-
-// ============================================================
-// FIX DARK MODE BACKGROUNDS FOR STACKING
-// ============================================================
-
-const styleObserver = new MutationObserver(() => {
-    const isDark = document.body.classList.contains('dark');
-    
-    gsap.set('.hero', { 
-        backgroundColor: isDark ? '#171717' : '#F8F8F8' 
-    });
-    gsap.set('.about', { 
-        backgroundColor: isDark ? '#171717' : '#FFFFFF' 
-    });
-    
-    ScrollTrigger.refresh();
-});
-
-styleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
 // ============================================================
 // CONTACT BUTTON - Scroll to Contact Section

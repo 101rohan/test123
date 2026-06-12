@@ -288,7 +288,7 @@ body.dark .contactBtn { background: #2A2A2A; }
     position: relative;
     z-index: 1;
     overflow: hidden;
-    margin-bottom: 0; /* WAS 100vh — this was causing the jank */
+    margin-bottom: 60vh; /* WAS 100vh — this was causing the jank */
 }
 
 .heroTop h1,
@@ -612,7 +612,17 @@ body.dark .project span { color: #F8F8F8; }
 
 body.dark .project a { color: #D4D4D4; }
 
-/* CENTER: card stack */
+.stack-card {
+    transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stack-inner:hover .stack-card {
+    opacity: 0.96;
+    filter: brightness(0.969);
+}
+
 
 .stack-container {
     width: 100%;
@@ -632,6 +642,8 @@ body.dark .project a { color: #D4D4D4; }
     height: auto;
     margin: 0 auto;
 }
+
+
 
 .stack-card {
     position: absolute;
