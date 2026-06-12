@@ -22,21 +22,40 @@ gsap.registerPlugin(ScrollTrigger);
 const isMobile = window.innerWidth <= 767;
 
 /* --------------------
-   LENIS
+   LENIS - OPTIMIZED SETUP
 -------------------- */
 
 const lenis = new Lenis({
     duration: 1.2,
-    smoothWheel: true
+    smoothWheel: true,
+    // Add these for better performance
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
 });
 
-lenis.on("scroll", ScrollTrigger.update);
+// Simplified RAF loop
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
 
-gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
+requestAnimationFrame(raf);
+
+// Update ScrollTrigger on scroll - throttled
+let scrollTimeout;
+lenis.on('scroll', () => {
+    if (scrollTimeout) return;
+    scrollTimeout = requestAnimationFrame(() => {
+        ScrollTrigger.update();
+        scrollTimeout = null;
+    });
 });
-
-gsap.ticker.lagSmoothing(0);
 
 /* --------------------
    STACK COVER — ALL PANELS (with Mobile Check)
@@ -140,18 +159,6 @@ const touchSection   = document.querySelector(".touch");
    2. HERO ANIMATION  —  Mask-reveal on load + scroll parallax
    ================================================================ */
 
-function wrapForMask(el) {
-    const outer = document.createElement("span");
-    outer.style.cssText = "display:block;overflow:hidden;";
-    const inner = document.createElement("span");
-    inner.style.display = "block";
-    inner.innerHTML = el.innerHTML;
-    outer.appendChild(inner);
-    el.innerHTML = "";
-    el.appendChild(outer);
-    return inner;
-}
-
 (function initHero() {
     if (!heroTopEl || !heroNameEl) return;
 
@@ -192,21 +199,19 @@ function wrapForMask(el) {
     // Skip parallax on mobile
     if (isMobile) return;
 
-    // FIX: Make both heroTop and heroName scroll at the SAME speed
-    const heroTl = gsap.timeline({
-        scrollTrigger: { 
-            trigger: ".hero", 
-            start: "top top", 
-            end: "bottom top", 
-            scrub: true 
+    // Simplified parallax - single animation
+    gsap.to([heroTopEl, heroNameEl], { 
+        y: -80, // Reduced movement for smoother feel
+        opacity: 0.7,
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+            // Add this to prevent layout thrashing
+            fastScrollEnd: true
         }
-    });
-    
-    // Apply the SAME animation to both elements
-    heroTl.to([heroTopEl, heroNameEl], { 
-        y: -120, 
-        opacity: 1, 
-        ease: "none" 
     });
 })();
 
@@ -471,7 +476,11 @@ document.querySelectorAll(".dropdownMenu a[href^='#']").forEach((link) => {
     link.addEventListener("click", (e) => {
         const id     = link.getAttribute("href").slice(1);
         const target = document.getElementById(id);
-        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
+        if (target) { 
+            e.preventDefault(); 
+            // Use Lenis scrollTo instead of native
+            lenis.scrollTo(target, { offset: 0, duration: 1.5 });
+        }
         closeMenu();
     });
 });
@@ -488,12 +497,18 @@ if (themeToggle) {
     });
 }
 
+// Throttled scroll progress update
+let progressTimeout;
 window.addEventListener("scroll", () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const percent   = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
-    if (scrollFill) scrollFill.style.width  = `${percent}%`;
-    if (scrollText) scrollText.textContent  = `${percent}%`;
+    if (progressTimeout) return;
+    progressTimeout = requestAnimationFrame(() => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const percent   = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+        if (scrollFill) scrollFill.style.width  = `${percent}%`;
+        if (scrollText) scrollText.textContent  = `${percent}%`;
+        progressTimeout = null;
+    });
 }, { passive: true });
 
 
@@ -536,15 +551,20 @@ window.addEventListener("scroll", () => {
         return;
     }
 
-    // Desktop: scroll-driven
+    // Desktop: scroll-driven with throttling
+    let workUpdateTimeout;
     function updateWorkOnScroll() {
-        const rect       = workSection.getBoundingClientRect();
-        const sectionH   = workSpacer.offsetHeight;
-        const viewportH  = window.innerHeight;
-        const scrolled   = -rect.top;
-        const scrollable = sectionH - viewportH;
-        const progress   = Math.max(0, Math.min(1, scrolled / scrollable));
-        renderWork(Math.round(progress * (totalCards - 1)));
+        if (workUpdateTimeout) return;
+        workUpdateTimeout = requestAnimationFrame(() => {
+            const rect       = workSection.getBoundingClientRect();
+            const sectionH   = workSpacer.offsetHeight;
+            const viewportH  = window.innerHeight;
+            const scrolled   = -rect.top;
+            const scrollable = sectionH - viewportH;
+            const progress   = Math.max(0, Math.min(1, scrolled / scrollable));
+            renderWork(Math.round(progress * (totalCards - 1)));
+            workUpdateTimeout = null;
+        });
     }
 
     window.addEventListener("scroll", updateWorkOnScroll, { passive: true });
@@ -555,7 +575,7 @@ window.addEventListener("scroll", () => {
         const scrollable = sectionH - viewportH;
         const target     = (scrollable / (totalCards - 1)) * i;
         const sectionTop = workSection.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: sectionTop + target, behavior: "smooth" });
+        lenis.scrollTo(sectionTop + target, { duration: 1.5 });
     }
 
     projectItems.forEach((p, i) => p.addEventListener("click", () => scrollToCard(i)));
@@ -706,7 +726,7 @@ window.addEventListener("scroll", () => {
 })();
 
 // ============================================================
-// ENHANCED PANEL STACKING (Desktop Only)
+// ENHANCED PANEL STACKING (Desktop Only) - SIMPLIFIED
 // ============================================================
 
 const allPanels = gsap.utils.toArray(".panel");
@@ -719,112 +739,28 @@ allPanels.forEach((panel, i) => {
     // Skip stacking animations on mobile
     if (isMobile) return;
     
+    // Single combined animation instead of two separate ones
     gsap.to(panel, {
         scale: 0.88,
         borderRadius: "28px",
-        ease: "power2.inOut",
-        scrollTrigger: {
-            trigger: nextPanel,
-            start: "top bottom-=50",
-            end: "top top+=100",
-            scrub: 1,
-            invalidateOnRefresh: true
-        }
-    });
-    
-    gsap.to(panel, {
         opacity: 0.85,
         ease: "none",
         scrollTrigger: {
             trigger: nextPanel,
             start: "top bottom-=50",
             end: "top center",
-            scrub: true
+            scrub: 1,
+            invalidateOnRefresh: true
         }
     });
 });
 
 // ============================================================
-// SNAP SCROLLING (Desktop Only)
+// REMOVE SNAP SCROLLING - It conflicts with smooth scrolling
 // ============================================================
 
-(function initSnapScrolling() {
-    if (isMobile) return;
-    
-    const sections = document.querySelectorAll('.panel');
-    let isScrolling = false;
-    let targetSection = null;
-    
-    const snapToSection = () => {
-        if (isScrolling) return;
-        
-        let currentSection = null;
-        let minDistance = Infinity;
-        const viewportCenter = window.innerHeight / 2;
-        
-        sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            const distance = Math.abs(rect.top);
-            
-            if (distance < minDistance && rect.top < viewportCenter) {
-                minDistance = distance;
-                currentSection = section;
-            }
-        });
-        
-        if (currentSection && currentSection !== targetSection) {
-            targetSection = currentSection;
-            isScrolling = true;
-            
-            const targetY = currentSection.offsetTop;
-            const currentY = window.scrollY;
-            const distance = targetY - currentY;
-            const duration = Math.min(Math.max(Math.abs(distance) * 0.5, 600), 1000);
-            
-            gsap.to(window, {
-                scrollTo: {
-                    y: targetY,
-                    autoKill: false
-                },
-                duration: duration / 1000,
-                ease: "power2.inOut",
-                onComplete: () => {
-                    setTimeout(() => {
-                        isScrolling = false;
-                        targetSection = null;
-                    }, 100);
-                }
-            });
-        }
-    };
-    
-    let wheelTimeout;
-    let lastWheelTime = 0;
-    const wheelDelay = 500;
-    
-    window.addEventListener('wheel', (e) => {
-        const now = Date.now();
-        if (now - lastWheelTime < wheelDelay) return;
-        
-        if (wheelTimeout) clearTimeout(wheelTimeout);
-        
-        wheelTimeout = setTimeout(() => {
-            snapToSection();
-            lastWheelTime = now;
-            wheelTimeout = null;
-        }, 80);
-    }, { passive: false });
-    
-    let scrollTimer;
-    window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
-            if (!isScrolling) {
-                snapToSection();
-            }
-        }, 150);
-    });
-})();
+// The snap scrolling section has been removed entirely
+// Lenis handles smooth scrolling naturally
 
 // ============================================================
 // FIX DARK MODE BACKGROUNDS FOR STACKING
@@ -854,7 +790,7 @@ if (contactBtn) {
     contactBtn.addEventListener('click', () => {
         const touchSection = document.getElementById('touch');
         if (touchSection) {
-            touchSection.scrollIntoView({ behavior: 'smooth' });
+            lenis.scrollTo(touchSection, { duration: 1.5 });
         }
     });
 }
