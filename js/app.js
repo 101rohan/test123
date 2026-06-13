@@ -97,7 +97,6 @@ const touchSection   = document.querySelector(".touch");
 /* ================================================================
    1. PAGE LOAD SEQUENCE  —  Staircase wipe + text entrance
    ================================================================ */
-
 (function initLoader() {
     if (!loaderContainer || loaderTexts.length === 0 || loaderPanels.length === 0) return;
 
@@ -109,6 +108,17 @@ const touchSection   = document.querySelector(".touch");
         delay: 0.15,
         onComplete: () => {
             gsap.set(loaderContainer, { autoAlpha: 0, pointerEvents: "none" });
+
+            // Arrived via /index.html#about or /index.html#work — scroll there
+            const hash = window.location.hash;
+            if (hash) {
+                const target = document.querySelector(hash);
+                if (target) {
+                    setTimeout(() => {
+                        lenis.scrollTo(target, { offset: 0, duration: 1.2 });
+                    }, 50);
+                }
+            }
         }
     });
 
@@ -122,7 +132,6 @@ const touchSection   = document.querySelector(".touch");
     }, "+=0.1");
     tl.to(loaderTexts, { opacity: 0, duration: 0.3, ease: "power2.in" }, "<+=0.3");
 })();
-
 /* ================================================================
    2. HERO ANIMATION  —  Mask-reveal on load + scroll parallax
    ================================================================ */
@@ -274,7 +283,7 @@ const touchSection   = document.querySelector(".touch");
        PRETEXT — dynamic text reflow around the draggable photo
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-    // Skip Pretext on mobile since image is hidden
+   // Skip Pretext on mobile since image is hidden
     if (isMobile) return;
 
     const PARA1 = "I'm an aspiring UI/UX designer and Laravel developer focused on creating products that are both intuitive and technically solid. I enjoy translating user needs into clean interfaces and then bringing them to life with scalable backend systems.";
@@ -291,12 +300,17 @@ const touchSection   = document.querySelector(".touch");
         paras[1].remove();
     }
 
-    /* Pretext state — populated after fonts resolve */
+    /* Pretext functions — populated only if the module loads successfully */
+    let prepareWithSegments  = null;
+    let layoutNextLineRange  = null;
+    let materializeLineRange = null;
+
+    /* Pretext state */
     let preparedPara1 = null;
     let preparedPara2 = null;
     let FONT        = "18px Inter";
     let LINE_HEIGHT = 24;
-    const PARA_GAP  = 22;  /* matches original margin-bottom on <p> */
+    const PARA_GAP  = 22;
 
     /* Container geometry cached in section-relative coords */
     let contLeft = 0, contTop = 0, contRight = 0, contW = 0;
@@ -310,32 +324,17 @@ const touchSection   = document.querySelector(".touch");
         contW     = flowContainer.offsetWidth;
     }
 
-    document.fonts.ready.then(() => {
-        const basePx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-        const fontPx = Math.round(basePx * 1.15);
-        FONT        = `${fontPx}px Inter`;
-        LINE_HEIGHT = Math.round(fontPx * 1.32);
-
-        preparedPara1 = prepareWithSegments(PARA1, FONT);
-        preparedPara2 = prepareWithSegments(PARA2, FONT);
-
-        updateContainerGeometry();
-        reflowText();
-    });
-
-    /* ── Core reflow: rebuild all line spans, routing around the image ── */
+    /* ── Core reflow ── */
     let reflowPending = false;
 
     function reflowText() {
-        if (!preparedPara1 || !preparedPara2 || contW <= 0) return;
+        if (!prepareWithSegments || !preparedPara1 || !preparedPara2 || contW <= 0) return;
 
-        /* Image bounds in section-relative coords */
         const imgL = tx;
         const imgT = ty;
         const imgR = tx + meImg.offsetWidth;
         const imgB = ty + meImg.offsetHeight;
 
-        /* Pre-check horizontal overlap */
         const overH = imgL < contRight && imgR > contLeft;
 
         flowContainer.innerHTML = "";
@@ -394,6 +393,34 @@ const touchSection   = document.querySelector(".touch");
     }
 
     window.addEventListener("resize", () => { updateContainerGeometry(); scheduleReflow(); });
+
+    /* Load Pretext lazily. A failure here is contained — it can never
+       take down the rest of app.js (navbar, theme toggle, scroll, etc.) */
+    import('https://esm.sh/@chenglou/pretext')
+        .then((mod) => {
+            prepareWithSegments  = mod.prepareWithSegments;
+            layoutNextLineRange  = mod.layoutNextLineRange;
+            materializeLineRange = mod.materializeLineRange;
+            return document.fonts.ready;
+        })
+        .then(() => {
+            if (!prepareWithSegments) return;
+
+            const basePx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+            const fontPx = Math.round(basePx * 1.15);
+            FONT        = `${fontPx}px Inter`;
+            LINE_HEIGHT = Math.round(fontPx * 1.32);
+
+            preparedPara1 = prepareWithSegments(PARA1, FONT);
+            preparedPara2 = prepareWithSegments(PARA2, FONT);
+
+            updateContainerGeometry();
+            reflowText();
+        })
+        .catch((err) => {
+            console.error("Pretext failed to load — falling back to static text:", err);
+            flowContainer.innerHTML = `<p style="margin-bottom:1.375rem;">${PARA1}</p><p>${PARA2}</p>`;
+        });
 
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
