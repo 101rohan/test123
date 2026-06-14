@@ -281,14 +281,14 @@ body.dark .contactBtn { background: #2A2A2A; }
 
 .hero {
     min-height: 103vh;
-    padding: 2rem 1.5rem 2rem 1.5rem; 
+    margin: 1.25rem; 
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
     z-index: 1;
     overflow: hidden;
-    margin-bottom: 60vh; /* WAS 100vh — this was causing the jank */
+    margin-bottom: 40vh; 
 }
 
 .heroTop h1,
@@ -297,14 +297,14 @@ body.dark .contactBtn { background: #2A2A2A; }
 }
 
 .heroTop {
-    margin-bottom: 1.25rem;
+    margin-bottom: 18rem;
     text-align: right;      
     flex-shrink: 0;
 }
 
 .heroTop h1 {
     font-family: "Inter";
-    font-size: 2.2rem;
+    font-size: 1.24rem;
     font-weight: 600;
     color: #171717;
     line-height: 1.1;
@@ -313,8 +313,8 @@ body.dark .contactBtn { background: #2A2A2A; }
 }
 
 .heroTop p {
-    margin-top: 1.5rem;
-    font-size: 1rem;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
     color: #777777;
     overflow: hidden;      
     height: 1.2em;           
@@ -329,6 +329,7 @@ body.dark .heroTop p  { color: #B0B0B0; }
     justify-content: space-between;
     align-items: flex-end;
     gap: 2rem;
+    padding-bottom: 2rem;
 }
 
 .heroName {
@@ -346,7 +347,10 @@ body.dark .heroTop p  { color: #B0B0B0; }
 
 body.dark .heroName { color: #F8F8F8; }
 
-.heroText { position: relative; }
+.heroText { 
+    position: relative;
+    margin-left: -1.25rem;
+ }
 
 .heroText span {
     display: block;
