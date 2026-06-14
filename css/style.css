@@ -427,14 +427,27 @@ body.dark .about {
     gap: 6rem;
 }
 
-.abt-text { max-width: 25rem; }
-
+.abt-text { 
+    max-width: 25rem;
+}
+.mail {
+    margin-top: 12.5rem;
+}
 .abt-label {
     color: #C8C8C8;
     font-size: 1.125rem;
     font-weight: 600;
-    margin-bottom: 1.125rem;
+    margin-bottom: 1rem;
 }
+
+.abt-labelE {
+    color: #C8C8C8;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: right;
+}
+
 
 body.dark .abt-label { color: #7A7A7A; }
 
@@ -446,6 +459,7 @@ body.dark .abt-label { color: #7A7A7A; }
     margin-bottom: 1.375rem;
     display: block;
     width: 100%;
+    text-align: right;
 }
 
 body.dark .abt-text p,
@@ -647,7 +661,7 @@ body.dark .project a { color: #D4D4D4; }
 
 .stack-card {
     position: absolute;
-    top: -6.25rem;
+    top: -7.25rem;
     left: -0.625rem;
     width: 100%;
     height: 100%;
@@ -834,7 +848,7 @@ body:not(.dark) .touch { background: #f8f8f8; }
 .touch p {
     color: #F8F8F8;
     font-family: Inter;
-    font-size: 1rem;
+
     font-weight: 500;
     letter-spacing: -0.06rem;
     max-width: 40rem;
@@ -852,8 +866,9 @@ body:not(.dark) .touch p { color: #171717; }
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 8rem;
+    width: 7.5rem;
     height: 2.5rem;
+        font-size: 0.8rem;
 }
 
 body:not(.dark) .touch a {
