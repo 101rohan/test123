@@ -746,3 +746,101 @@ window.addEventListener('resize', () => {
         }
     }, 250);
 });
+
+function magneticButton(selector, strength = 0.2) {
+  document.querySelectorAll(selector).forEach(btn => {
+
+    btn.addEventListener("mousemove", (e) => {
+      const rect = btn.getBoundingClientRect();
+
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      gsap.to(btn, {
+        x: x * strength,
+        y: y * strength,
+        duration: 0.6,
+        ease: "power2.out"
+      });
+    });
+
+    btn.addEventListener("mouseleave", () => {
+      gsap.to(btn, {
+        x: 0,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+
+  });
+}
+
+magneticButton(".touch a", 0.2);
+magneticButton(".contactBtn", 0.2);
+magneticButton(".github-btn", 0.2);
+
+/* ================================
+   CURSOR SYSTEM (DOT → PILL)
+   ================================ */
+
+const cursor = document.querySelector(".cursor");
+const cursorText = document.querySelector(".cursor-text");
+
+let mouseX = 0;
+let mouseY = 0;
+let currentX = 0;
+let currentY = 0;
+
+const offsetY = 12;
+
+/* Track mouse */
+window.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+/* Smooth follow (GSAP ticker) */
+gsap.ticker.add(() => {
+  currentX += (mouseX - currentX) * 0.15;
+  currentY += (mouseY - currentY) * 0.15;
+
+  gsap.set(cursor, {
+    x: currentX,
+    y: currentY + offsetY
+  });
+});
+
+/* ================================
+   STACK HOVER → "SEE MORE"
+   ================================ */
+
+const cards = document.querySelectorAll(".stack-card, .project-card");
+
+cards.forEach(card => {
+  card.addEventListener("mouseenter", () => {
+    cursor.classList.add("active");
+    cursorText.textContent = "SEE MORE";
+  });
+
+  card.addEventListener("mouseleave", () => {
+    cursor.classList.remove("active");
+    cursorText.textContent = "";
+  });
+});
+
+/* ================================
+   HIDE CURSOR ON IMAGE HOVER
+   ================================ */
+
+const me = document.querySelector(".me");
+
+if (me) {
+  me.addEventListener("mouseenter", () => {
+    cursor.style.opacity = "0";
+  });
+
+  me.addEventListener("mouseleave", () => {
+    cursor.style.opacity = "1";
+  });
+}

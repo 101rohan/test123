@@ -26,6 +26,52 @@ body.dark {
     transform-origin: center top;
 }
 
+
+.cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 20px;
+    width: 20px;
+
+    border-radius: 50%;
+    background: #171717;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+    z-index: 99999;
+
+    transform: translate(-50%, -50%);
+    transition:
+        width 0.25s ease,
+        height 0.25s ease,
+        border-radius 0.25s ease,
+        background 0.25s ease,
+        padding 0.25s ease;
+}
+
+.cursor-text {
+    font-size: 10px;
+    color: #F8F8F8;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+.cursor.active {
+    width: 90px;
+    height: 32px;
+    border-radius: 999px;
+    background: #171717;
+}
+
+.cursor.active .cursor-text {
+    opacity: 1;
+}
+
 /* ================================
    NAVBAR
    ================================ */
@@ -258,14 +304,15 @@ body.dark .dropdownMenu a { color: #F8F8F8; }
     font-weight: 400;
     background: #171717;
     cursor: pointer;
-    position: relative;
     overflow: hidden;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    transition: background 0.35s ease;
     color: #F8F8F8;
     text-decoration: none;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(.22,1,.36,1);
+    will-change: transform;
 }
 
 body.dark .contactBtn { background: #2A2A2A; }
@@ -783,7 +830,7 @@ body.dark .project a { color: #D4D4D4; }
     background: #171717;
     color: #F8F8F8;
     text-decoration: none;
-    border-radius: 0.25rem;
+    border-radius: 25rem;
     width: 6.1875rem;
 }
 
@@ -845,6 +892,7 @@ body.dark .project-card p   { color: #171717; }
     text-align: center;
     gap: 1.5rem;
     padding: 0 2rem 0 2rem;
+
 }
 
 body:not(.dark) .touch { background: #f8f8f8; }
@@ -860,19 +908,66 @@ body:not(.dark) .touch { background: #f8f8f8; }
 
 body:not(.dark) .touch p { color: #171717; }
 
-.touch a {
-    border-radius: 0.25rem;
+.email-btn {
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 25rem;
     background: #F8F8F8;
-    gap: 0.625rem;
-    padding: 0.625rem;
     color: #171717;
+
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 7.5rem;
+    transition:
+        width 0.5s cubic-bezier(.22,1,.36,1),
+        background 0.3s ease;
     height: 2.5rem;
-        font-size: 0.8rem;
+
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+body:not(.dark) .email-btn {
+    background: #171717;
+    color: #F8F8F8;
+}
+
+.text-wrap {
+    position: relative;
+    height: 1rem;
+    overflow: hidden;
+    width: 100%;
+}
+
+.text-default,
+.text-hover {
+    display: block;
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+}
+
+.text-hover {
+    position: absolute;
+    left: 0;
+    top: 100%;
+}
+
+.email-btn:hover {
+    width: 13rem;
+}
+
+/* Hover animation */
+.email-btn:hover .text-default {
+    transform: translateY(-100%);
+}
+
+.email-btn:hover .text-hover {
+    transform: translateY(-100%);
 }
 
 body:not(.dark) .touch a {
@@ -1943,3 +2038,5 @@ body.dark .project-card-link:hover .project-card {
     .page-fade-sequence__item:nth-child(5) { left: 75vw; }
     .page-fade-sequence__item:nth-child(6) { display: none; }
 }
+
+
