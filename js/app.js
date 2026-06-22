@@ -30,35 +30,23 @@ const isMobile = window.innerWidth <= 767;
    LENIS - OPTIMIZED SETUP
 -------------------- */
 
+/* AFTER */
 const lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smoothWheel: true,
     wheelMultiplier: 1,
     touchMultiplier: 2,
     syncTouch: false,
     infinite: false,
 });
 
-// Simplified RAF loop
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-
-requestAnimationFrame(raf);
-
-// Update ScrollTrigger on scroll - throttled
-let scrollTimeout;
-lenis.on('scroll', () => {
-    if (scrollTimeout) return;
-    scrollTimeout = requestAnimationFrame(() => {
-        ScrollTrigger.update();
-        scrollTimeout = null;
-    });
+// Drive Lenis through GSAP's ticker so both are in sync — fixes Chrome frame desync
+gsap.ticker.add((time) => {
+    lenis.raf(time * 1000); // GSAP time is in seconds; Lenis expects ms
 });
+
+// Update ScrollTrigger on every Lenis scroll tick (no extra RAF needed)
+lenis.on('scroll', ScrollTrigger.update);
 
 /* ================================
    DOM REFERENCES
