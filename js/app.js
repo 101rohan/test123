@@ -503,6 +503,25 @@ const touchSection   = document.querySelector(".touch");
     document.addEventListener("touchmove", (e) => onDragMove(e.touches[0].clientX, e.touches[0].clientY));
     document.addEventListener("touchend",  onDragEnd);
 
+    const hoverPreview = document.getElementById("aboutHoverImg");
+
+
+if(meImg && hoverPreview){
+
+    meImg.addEventListener("mouseenter",()=>{
+
+        hoverPreview.classList.add("show");
+
+    });
+
+
+    meImg.addEventListener("mouseleave",()=>{
+
+        hoverPreview.classList.remove("show");
+
+    });
+
+}
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        CUSTOM CURSOR

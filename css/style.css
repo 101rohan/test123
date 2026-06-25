@@ -330,6 +330,7 @@ body.dark .contactBtn { background: #2A2A2A; }
   justify-content: flex-end;
   overflow: hidden;
   position: relative;
+  margin-bottom: 60vh;
 }
 
 
@@ -586,6 +587,65 @@ body.dark .abt-canvas { color: #D4D4D4; }
 .me.dragging {
     box-shadow: 0 1.25rem 3rem rgba(0,0,0,0.22);
     cursor: grabbing;
+}
+
+.about-hover-img {
+    position: absolute;
+
+    /* right side like reference */
+    left: 32rem;
+    top: 5rem;
+
+    width: 6rem;
+    height: 5rem;
+
+    opacity: 0;
+    transform: translateX(-30px);
+
+    pointer-events:none;
+
+    transition:
+        opacity .45s ease,
+        transform .45s cubic-bezier(.22,1,.36,1);
+
+    z-index:50;
+}
+
+
+.preview {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    width: 6rem;
+    height: 5rem;
+}
+
+
+/* light mode */
+.darkPreview {
+    display:none;
+}
+
+
+/* dark mode */
+body.dark .lightPreview {
+    display:none;
+}
+
+body.dark .darkPreview {
+    display:block;
+}
+
+
+/* active state */
+.about-hover-img.show {
+
+    opacity:1;
+    width: 6rem;
+    height: 5rem;
+    transform:translateX(0);
+
 }
 
 /* ================================
