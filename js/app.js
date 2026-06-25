@@ -120,79 +120,115 @@ const touchSection   = document.querySelector(".touch");
     }, "+=0.1");
     tl.to(loaderTexts, { opacity: 0, duration: 0.3, ease: "power2.in" }, "<+=0.3");
 })();
+
 /* ================================================================
-   2. HERO ANIMATION  —  Mask-reveal on load + scroll parallax
+   2. HERO ANIMATION — subtle editorial reveal
    ================================================================ */
-
 (function initHero() {
-    if (!heroTopEl || !heroNameEl) return;
 
-    const heroH1s = Array.from(heroTopEl.querySelectorAll("h1"));
-    const heroP   = heroTopEl.querySelector("p");
-    const allEls  = heroP ? [...heroH1s, heroP] : heroH1s;
+    const heroSection = document.querySelector(".hero");
+    const heroStatement = document.querySelector(".heroStatement");
 
-    gsap.set(allEls, { yPercent: 110 });
-    gsap.set(heroNameEl, { yPercent: 110 });
+    if (!heroSection || !heroStatement) return;
 
-    document.fonts.ready.then(() => {
-        gsap.to(heroH1s, {
-            yPercent: 0,
-            duration: 1.2,
-            ease: "expo.out",
-            stagger: 0.12,
-            delay: 2.5
+
+    const statementItems = heroStatement.querySelectorAll("h2, p");
+
+
+    // initial reveal position
+    gsap.set([
+        statementItems,
+        ".smallHi",
+        ".heroName",
+        ".roles",
+        ".heroDescription"
+
+    ], {
+        yPercent: 100,
+        opacity:0
+    });
+
+
+
+    document.fonts.ready.then(()=>{
+
+
+        const tl = gsap.timeline({
+            delay:2.5
         });
 
-        if (heroP) {
-            gsap.to(heroP, {
-                yPercent: 0,
-                duration: 1,
-                ease: "expo.out",
-                delay: 2.75
-            });
-        }
 
-        gsap.to(heroNameEl, {
-            yPercent: 0,
-            duration: 1.4,
-            ease: "expo.out",
-            delay: 2.8
+        tl.to([
+            statementItems,
+            ".smallHi",
+            ".heroName",
+            ".roles"
+
+        ],{
+            yPercent:0,
+            opacity:1,
+            duration:1,
+            stagger:0.08,
+            ease:"power3.out"
         });
+
+
+        tl.to(".heroDescription",{
+
+            yPercent:0,
+            opacity:1,
+            duration:1,
+
+            ease:"expo.out"
+
+        },"-=0.7");
+
+
     });
 
-    // Skip parallax on mobile
-    if (isMobile) return;
 
-    // Clean single parallax - no opacity changes, no conflicts
-    gsap.to(heroTopEl, {
-        y: -60,
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true
+
+    if(isMobile) return;
+
+
+
+    // subtle scroll movement
+    gsap.to(heroStatement,{
+        y:-30,
+
+        ease:"none",
+
+        scrollTrigger:{
+            trigger:heroSection,
+            start:"top top",
+            end:"bottom top",
+            scrub:true
         }
+
     });
 
-    gsap.to(heroNameEl, {
-        y: -40,
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true
+
+
+    gsap.to(".heroName",{
+
+        y:-20,
+
+        ease:"none",
+
+        scrollTrigger:{
+            trigger:heroSection,
+            start:"top top",
+            end:"bottom top",
+            scrub:true
         }
+
     });
+
+
 })();
 
 /* ================================================================
    2.5 STACK COVER — ABOUT OVER HERO (Desktop Only)
-   ----------------------------------------------------------------
-   Single source of truth for the hero -> about transition.
-   Everything is driven by ONE scrub:true / ease:"none" tween so it
-   tracks the scrollbar 1:1 — no fighting timelines, no lag.
    ================================================================ */
 
 (function initSectionStacking() {
