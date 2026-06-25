@@ -1,11 +1,6 @@
-/* ============================================================
-   app.js  —  Full animation & interaction layer
-   Requires: GSAP 3 + ScrollTrigger (loaded before this file)
-   ============================================================ */
 
 import { prepareWithSegments, layoutNextLineRange, materializeLineRange } from 'https://esm.sh/@chenglou/pretext';
 
-/* Grab GSAP globals exposed by CDN scripts */
 const gsap          = window.gsap;
 const ScrollTrigger = window.ScrollTrigger;
 
@@ -15,9 +10,6 @@ const ScrollTrigger = window.ScrollTrigger;
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* Prevents GSAP's internal "catch up" jump after long tasks /
-   tab switches — this is the #1 cause of janky scrub animations
-   when paired with Lenis. */
 gsap.ticker.lagSmoothing(0);
 
 /* ================================
@@ -192,38 +184,6 @@ const touchSection   = document.querySelector(".touch");
 
 
 
-    // subtle scroll movement
-    gsap.to(heroStatement,{
-        y:-30,
-
-        ease:"none",
-
-        scrollTrigger:{
-            trigger:heroSection,
-            start:"top top",
-            end:"bottom top",
-            scrub:true
-        }
-
-    });
-
-
-
-    gsap.to(".heroName",{
-
-        y:-20,
-
-        ease:"none",
-
-        scrollTrigger:{
-            trigger:heroSection,
-            start:"top top",
-            end:"bottom top",
-            scrub:true
-        }
-
-    });
-
 
 })();
 
@@ -231,59 +191,124 @@ const touchSection   = document.querySelector(".touch");
    2.5 STACK COVER — ABOUT OVER HERO (Desktop Only)
    ================================================================ */
 
+
 (function initSectionStacking() {
+
     const heroSection = document.querySelector('.hero');
+
     if (!heroSection || !aboutSection) return;
 
+
     function updateStackingBackgrounds() {
+
         const isDark = document.body.classList.contains('dark');
 
-        gsap.set(heroSection, {
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            backgroundColor: isDark ? '#171717' : '#F8F8F8'
+        gsap.set(heroSection,{
+            position:'sticky',
+            top:0,
+            zIndex:1,
+            backgroundColor:isDark ? '#171717':'#F8F8F8'
         });
 
-        gsap.set(aboutSection, {
-            position: 'sticky',
-            top: 0,
-            zIndex: 2,
-            backgroundColor: isDark ? '#171717' : '#FFFFFF'
+
+        gsap.set(aboutSection,{
+            position:'sticky',
+            top:0,
+            zIndex:2,
+            backgroundColor:isDark ? '#171717':'#FFFFFF'
         });
+
     }
+
 
     updateStackingBackgrounds();
 
-    if (!isMobile) {
-        gsap.set(heroSection, { willChange: 'transform' });
 
-        gsap.to(heroSection, {
-            scale: 0.9,
-            borderRadius: '32px',
-            ease: 'none',
-            scrollTrigger: {
-                trigger: aboutSection,
-                start: 'top bottom',
-                end: 'top top',
-                scrub: true,
-                invalidateOnRefresh: true
-            }
+
+    if(!isMobile){
+
+
+        gsap.set(heroSection,{
+            transformOrigin:"center top"
         });
+
+
+        // HERO → ABOUT smooth shrink
+        gsap.to(heroSection,{
+
+            scale:0.92,
+
+            y:-40,
+
+            borderRadius:"32px",
+
+            ease:"none",
+
+
+            scrollTrigger:{
+
+                trigger:aboutSection,
+
+                start:"top bottom",
+
+                end:"top top",
+
+                scrub:1.2,
+
+            }
+
+        });
+
+
+
+        // ABOUT subtle reveal/parallax
+        gsap.fromTo(aboutSection,
+
+            {
+                y:80
+            },
+
+            {
+
+                y:0,
+
+                ease:"none",
+
+                scrollTrigger:{
+
+                    trigger:aboutSection,
+
+                    start:"top bottom",
+
+                    end:"top top",
+
+                    scrub:1.2
+
+                }
+
+            }
+
+        );
+
+
     }
 
-    const darkModeObserver = new MutationObserver(() => {
+
+
+    const darkModeObserver = new MutationObserver(()=>{
+
         updateStackingBackgrounds();
+
     });
 
-    darkModeObserver.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class']
+
+    darkModeObserver.observe(document.body,{
+        attributes:true,
+        attributeFilter:["class"]
     });
 
-    window.addEventListener('resize', () => {
-        ScrollTrigger.refresh();
-    });
+
+
 })();
 
 /* ================================================================
