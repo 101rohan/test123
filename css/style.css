@@ -23,6 +23,15 @@ body.dark {
     transform-origin: center top;
 }
 
+::selection {
+    background: #ba00c7;
+    color: #fff;
+}
+
+::-moz-selection {
+    background: #ba00c7;
+    color: #fff;
+}
 
 .cursor {
     position: fixed;
